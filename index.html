@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smile Cut — Мы все здесь ради возмездия</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--pink:#e040a0;--purple:#7b2fff;--bg:#0d0d12;--bg2:#13131c;--bg3:#1a1a28;--text:#f0eaf8;--muted:#8a7fa0;--border:rgba(224,64,160,0.18);}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;}
+
+/* NAV */
+.nav{background:rgba(13,13,18,0.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);padding:0 2rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.nav-logo{font-family:'Oswald',sans-serif;font-size:1.3rem;font-weight:700;letter-spacing:0.12em;background:linear-gradient(90deg,var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none;}
+.nav-links{display:flex;gap:6px;align-items:center;}
+.nav-links a{font-size:0.78rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:6px 14px;border-radius:20px;border:1px solid transparent;transition:all 0.2s;}
+.nav-links a:hover,.nav-links a.active{color:var(--pink);border-color:var(--border);}
+
+/* HERO */
+.hero{min-height:92vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:3rem;padding:3rem 3rem 3rem 4rem;position:relative;overflow:hidden;}
+.hero-bg{position:absolute;inset:0;z-index:0;background:radial-gradient(ellipse 60% 60% at 70% 40%,rgba(123,47,255,0.15) 0%,transparent 65%),radial-gradient(ellipse 40% 40% at 30% 70%,rgba(224,64,160,0.1) 0%,transparent 60%);}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(224,64,160,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(224,64,160,0.04) 1px,transparent 1px);background-size:40px 40px;}
+.hero-text{position:relative;z-index:2;}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(224,64,160,0.12);border:1px solid rgba(224,64,160,0.3);padding:5px 14px;border-radius:20px;font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--pink);margin-bottom:1.4rem;animation:fadeUp 0.6s 0.1s both;}
+.hero-tag::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--pink);display:inline-block;animation:pulse 2s infinite;}
+.hero h1{font-family:'Oswald',sans-serif;font-size:clamp(2.8rem,5vw,4.8rem);font-weight:700;line-height:0.95;margin-bottom:1.4rem;animation:fadeUp 0.7s 0.2s both;}
+.hero h1 .l1{display:block;color:var(--text);}
+.hero h1 .l2{display:block;background:linear-gradient(90deg,var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero-desc{font-size:1rem;line-height:1.75;color:var(--muted);max-width:380px;margin-bottom:2rem;animation:fadeUp 0.7s 0.35s both;}
+.hero-desc em{color:var(--text);font-style:normal;}
+.hero-stats{display:flex;gap:2rem;margin-bottom:2.5rem;animation:fadeUp 0.7s 0.45s both;}
+.stat-val{font-family:'Oswald',sans-serif;font-size:1.8rem;font-weight:700;color:var(--text);line-height:1;}
+.stat-lab{font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-top:3px;}
+.stat-div{width:1px;background:var(--border);}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;animation:fadeUp 0.7s 0.55s both;}
+.btn-primary{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;padding:0.75rem 1.6rem;border-radius:4px;font-size:0.82rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;text-decoration:none;transition:opacity 0.2s,transform 0.2s;}
+.btn-primary:hover{opacity:0.88;transform:translateY(-2px);}
+.btn-ghost{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--text);padding:0.75rem 1.6rem;border-radius:4px;border:1px solid rgba(255,255,255,0.15);font-size:0.82rem;letter-spacing:0.06em;text-transform:uppercase;text-decoration:none;transition:border-color 0.2s,transform 0.2s;}
+.btn-ghost:hover{border-color:var(--pink);transform:translateY(-2px);}
+
+/* HERO PLAYER */
+.hero-visual{position:relative;z-index:2;animation:scaleIn 0.9s 0.3s both;}
+.player-wrap{width:100%;border-radius:6px;overflow:hidden;border:2px solid rgba(224,64,160,0.3);box-shadow:0 0 60px rgba(224,64,160,0.2);aspect-ratio:16/9;background:#000;position:relative;}
+.player-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none;display:none;}
+.player-wrap.playing iframe{display:block;}
+.player-wrap.playing .thumb-layer{display:none;}
+.thumb-layer{position:absolute;inset:0;cursor:pointer;}
+.thumb-layer img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.3s;}
+.thumb-layer:hover img{transform:scale(1.03);}
+.play-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:rgba(0,0,0,0.28);transition:background 0.25s;}
+.thumb-layer:hover .play-overlay{background:rgba(0,0,0,0.48);}
+.play-btn{width:68px;height:68px;border-radius:50%;background:linear-gradient(135deg,var(--pink),var(--purple));display:flex;align-items:center;justify-content:center;transition:transform 0.25s;box-shadow:0 0 40px rgba(224,64,160,0.6);}
+.thumb-layer:hover .play-btn{transform:scale(1.12);}
+.play-btn svg{width:26px;height:26px;fill:#fff;margin-left:5px;}
+.play-note{font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.7);}
+
+/* SECTIONS */
+.section{padding:5rem 3rem;}
+.eyebrow{font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--pink);margin-bottom:0.6rem;display:flex;align-items:center;gap:10px;}
+.eyebrow::after{content:'';flex:0 0 24px;height:1px;background:var(--pink);}
+.sec-title{font-family:'Oswald',sans-serif;font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:700;color:var(--text);margin-bottom:2.5rem;letter-spacing:0.02em;}
+.sec-header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:2.5rem;}
+.sec-header .sec-title{margin-bottom:0;}
+.see-all{font-size:0.78rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--pink);text-decoration:none;border-bottom:1px solid rgba(224,64,160,0.3);padding-bottom:2px;transition:border-color 0.2s;}
+.see-all:hover{border-color:var(--pink);}
+
+/* LATEST VIDEOS SCROLL */
+.vscroll-wrap{overflow-x:auto;margin:0 -3rem;padding:0 3rem 1rem;scrollbar-width:thin;scrollbar-color:var(--pink) transparent;}
+.vscroll-wrap::-webkit-scrollbar{height:3px;}
+.vscroll-wrap::-webkit-scrollbar-thumb{background:var(--pink);border-radius:2px;}
+.vgrid{display:flex;gap:1rem;width:max-content;}
+.vcard{background:var(--bg3);border-radius:6px;overflow:hidden;border:1px solid var(--border);transition:transform 0.25s,border-color 0.25s,box-shadow 0.25s;text-decoration:none;display:block;width:272px;flex-shrink:0;}
+.vcard:hover{transform:translateY(-4px);border-color:rgba(224,64,160,0.5);box-shadow:0 8px 32px rgba(224,64,160,0.15);}
+.vthumb{aspect-ratio:16/9;overflow:hidden;position:relative;background:var(--bg2);}
+.vthumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.4s;}
+.vcard:hover .vthumb img{transform:scale(1.06);}
+.vdur{position:absolute;bottom:6px;right:8px;background:rgba(0,0,0,0.85);color:#fff;font-size:11px;padding:2px 6px;border-radius:3px;}
+.vinfo{padding:12px 14px;}
+.vtitle{font-size:0.86rem;font-weight:500;color:var(--text);line-height:1.4;margin-bottom:5px;}
+.vdesc{font-size:0.75rem;color:var(--muted);line-height:1.5;margin-bottom:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.vmeta{font-size:0.73rem;color:var(--muted);}
+.vmeta span{color:var(--pink);font-weight:500;}
+
+/* CTA */
+.cta-s{background:var(--bg);padding:5rem 3rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;position:relative;overflow:hidden;}
+.cta-glow{position:absolute;left:-100px;top:50%;transform:translateY(-50%);width:400px;height:400px;background:radial-gradient(circle,rgba(224,64,160,0.1) 0%,transparent 70%);border-radius:50%;}
+.cta-txt{position:relative;z-index:1;}
+.cta-q{font-family:'Oswald',sans-serif;font-size:clamp(1.6rem,3vw,2.4rem);font-weight:700;line-height:1.1;color:var(--text);margin-bottom:1rem;}
+.cta-q span{background:linear-gradient(90deg,var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.cta-sub{font-size:0.95rem;color:var(--muted);line-height:1.7;margin-bottom:2rem;}
+.cta-chs{display:flex;flex-direction:column;gap:10px;}
+.cch{display:flex;align-items:center;gap:12px;background:var(--bg3);border:1px solid var(--border);padding:12px 16px;border-radius:6px;text-decoration:none;transition:border-color 0.2s,transform 0.2s;}
+.cch:hover{border-color:rgba(224,64,160,0.5);transform:translateX(4px);}
+.cch-icon{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.cch-name{font-size:0.85rem;font-weight:500;color:var(--text);}
+.cch-handle{font-size:0.75rem;color:var(--muted);}
+.cta-img{position:relative;z-index:1;border-radius:8px;overflow:hidden;border:2px solid rgba(123,47,255,0.3);box-shadow:0 0 80px rgba(123,47,255,0.15);aspect-ratio:16/9;background:var(--bg3);}
+.cta-img img{width:100%;height:100%;object-fit:cover;display:block;}
+
+/* TOP */
+.top-s{background:var(--bg2);}
+.tgrid{display:grid;grid-template-columns:1.8fr 1fr 1fr;gap:1.2rem;}
+.tcard{background:var(--bg3);border-radius:6px;overflow:hidden;border:1px solid var(--border);transition:transform 0.25s,box-shadow 0.25s;text-decoration:none;display:block;position:relative;}
+.tcard:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(224,64,160,0.2);}
+.tcard.feat{border-color:rgba(224,64,160,0.4);}
+.tbadge{position:absolute;top:10px;left:10px;z-index:2;background:linear-gradient(90deg,var(--pink),var(--purple));color:#fff;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;padding:3px 10px;border-radius:20px;font-weight:600;}
+.tthumb{aspect-ratio:16/9;overflow:hidden;background:var(--bg2);}
+.tthumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.4s;}
+.tcard:hover .tthumb img{transform:scale(1.06);}
+.tinfo{padding:14px;}
+.ttitle{font-size:0.88rem;font-weight:500;color:var(--text);line-height:1.35;margin-bottom:6px;}
+.tviews{font-size:0.8rem;color:var(--pink);font-weight:500;}
+.tdesc{font-size:0.75rem;color:var(--muted);margin-top:5px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+
+/* FOOTER */
+.footer{background:var(--bg);border-top:1px solid var(--border);padding:2rem 3rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
+.flogo{font-family:'Oswald',sans-serif;font-size:1.1rem;font-weight:700;letter-spacing:0.12em;background:linear-gradient(90deg,var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.fnav{display:flex;gap:6px;flex-wrap:wrap;}
+.fnav a{font-size:0.75rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:5px 14px;border:1px solid rgba(255,255,255,0.08);border-radius:20px;transition:all 0.2s;}
+.fnav a:hover{color:var(--pink);border-color:var(--border);}
+.fcopy{font-size:0.72rem;color:rgba(255,255,255,0.2);}
+
+.reveal{opacity:0;transform:translateY(28px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.reveal.visible{opacity:1;transform:none;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:none;}}
+@keyframes scaleIn{from{opacity:0;transform:scale(0.94);}to{opacity:1;transform:scale(1);}}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="nav-logo" href="index.html">Smile Cut</a>
+  <div class="nav-links">
+    <a href="#videos">Видео</a>
+    <a href="#join">Сообщество</a>
+    <a href="#top">Популярные</a>
+    <a href="videos.html">Все видео</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg"></div><div class="hero-grid"></div>
+  <div class="hero-text">
+    <div class="hero-tag">YouTube канал</div>
+    <h1><span class="l1">Мы все здесь</span><span class="l2">ради возмездия.</span></h1>
+    <p class="hero-desc">Обзоры, мнения, разборы игр — от <em>Steam Deck</em> до <em>Shadow of the Erdtree</em>. Честно, без воды.</p>
+    <div class="hero-stats">
+      <div><div class="stat-val">1.2K</div><div class="stat-lab">подписчиков</div></div>
+      <div class="stat-div"></div>
+      <div><div class="stat-val">49</div><div class="stat-lab">видео</div></div>
+      <div class="stat-div"></div>
+      <div><div class="stat-val">594K</div><div class="stat-lab">просмотров</div></div>
+    </div>
+    <div class="hero-btns">
+      <a class="btn-primary" href="https://www.youtube.com/@unagi47" target="_blank">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M10 15l5.19-3L10 9v6m11.56-7.83c.13.47.22 1.1.28 1.9.07.8.1 1.49.1 2.09L22 12c0 2.19-.16 3.8-.44 4.83-.25.9-.83 1.48-1.73 1.73-.47.13-1.33.22-2.65.28-1.3.07-2.49.1-3.59.1L12 19c-4.19 0-6.8-.16-7.83-.44-.9-.25-1.48-.83-1.73-1.73-.13-.47-.22-1.1-.28-1.9-.07-.8-.1-1.49-.1-2.09L2 12c0-2.19.16-3.8.44-4.83.25-.9.83-1.48 1.73-1.73.47-.13 1.33-.22 2.65-.28 1.3-.07 2.49-.1 3.59-.1L12 5c4.19 0 6.8.16 7.83.44.9.25 1.48.83 1.73 1.73z"/></svg>
+        На канал
+      </a>
+      <a class="btn-ghost" href="https://t.me/heartbeat_freeze" target="_blank">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg>
+        Telegram
+      </a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="player-wrap" id="pw">
+      <div class="thumb-layer" id="tl">
+        <img src="https://img.youtube.com/vi/twyM_giCq8g/maxresdefault.jpg"
+             onerror="this.onerror=null;this.src='https://img.youtube.com/vi/twyM_giCq8g/hqdefault.jpg'" alt="">
+        <div class="play-overlay">
+          <div class="play-btn"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+          <div class="play-note">смотреть прямо здесь</div>
+        </div>
+      </div>
+      <iframe id="yt" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- LATEST VIDEOS -->
+<section class="section" id="videos" style="background:var(--bg2);">
+  <div class="eyebrow reveal">Свежее</div>
+  <div class="sec-header reveal">
+    <h2 class="sec-title">Последние видео</h2>
+    <a class="see-all" href="videos.html">Смотреть все →</a>
+  </div>
+  <div class="vscroll-wrap reveal">
+    <div class="vgrid">
+      <a class="vcard" href="https://youtube.com/watch?v=twyM_giCq8g" target="_blank">
+        <div class="vthumb"><img src="https://img.youtube.com/vi/twyM_giCq8g/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/twyM_giCq8g/hqdefault.jpg'" alt=""><span class="vdur">21:02</span></div>
+        <div class="vinfo"><div class="vtitle">Я играл, меня пугали в Resident Evil Requiem</div><div class="vdesc">Первые впечатления — страшно ли, интересно ли, стоит ли ждать.</div><div class="vmeta"><span>262</span> просмотра · 2 нед. назад</div></div>
+      </a>
+      <a class="vcard" href="https://youtube.com/watch?v=xLVY2EAa2oE" target="_blank">
+        <div class="vthumb"><img src="https://img.youtube.com/vi/xLVY2EAa2oE/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/xLVY2EAa2oE/hqdefault.jpg'" alt=""><span class="vdur">15:09</span></div>
+        <div class="vinfo"><div class="vtitle">Мы неправильно играли в RPG</div><div class="vdesc">Как механики жанра работают на самом деле и что большинство упускает.</div><div class="vmeta"><span>1 тыс.</span> просмотров · 1 мес. назад</div></div>
+      </a>
+      <a class="vcard" href="https://youtube.com/watch?v=haTx-vsEQrw" target="_blank">
+        <div class="vthumb"><img src="https://img.youtube.com/vi/haTx-vsEQrw/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/haTx-vsEQrw/hqdefault.jpg'" alt=""><span class="vdur">18:30</span></div>
+        <div class="vinfo"><div class="vtitle">Убить Билла в Ghost of Yotei</div><div class="vdesc">Разбираем трейлер и всё что знаем о новой игре Sucker Punch.</div><div class="vmeta"><span>121</span> просмотр · 4 мес. назад</div></div>
+      </a>
+      <a class="vcard" href="https://youtube.com/watch?v=c-ElmXhr2BU" target="_blank">
+        <div class="vthumb"><img src="https://img.youtube.com/vi/c-ElmXhr2BU/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/c-ElmXhr2BU/hqdefault.jpg'" alt=""><span class="vdur">16:07</span></div>
+        <div class="vinfo"><div class="vtitle">Властелин щита и Ктулху в DOOM: TDA</div><div class="vdesc">DOOM: The Dark Ages выглядит иначе — это хорошо или нет?</div><div class="vmeta"><span>858</span> просмотров · 10 мес. назад</div></div>
+      </a>
+      <a class="vcard" href="https://youtube.com/watch?v=d_rlekxNksk" target="_blank">
+        <div class="vthumb"><img src="https://img.youtube.com/vi/d_rlekxNksk/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/d_rlekxNksk/hqdefault.jpg'" alt=""><span class="vdur">23:10</span></div>
+        <div class="vinfo"><div class="vtitle">Секрет успеха Clair Obscur: Expedition 33</div><div class="vdesc">30 человек сделали игру года — как это вообще возможно?</div><div class="vmeta"><span>423</span> просмотра · 11 мес. назад</div></div>
+      </a>
+      <a class="vcard" href="https://youtube.com/watch?v=PlA5jEhxKjg" target="_blank">
+        <div class="vthumb"><img src="https://img.youtube.com/vi/PlA5jEhxKjg/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/PlA5jEhxKjg/hqdefault.jpg'" alt=""><span class="vdur">16:06</span></div>
+        <div class="vinfo"><div class="vtitle">Шокирующая тайна Silent Hill</div><div class="vdesc">Одна из самых замалчиваемых историй в игровой индустрии.</div><div class="vmeta"><span>8.5 тыс.</span> просмотров · 11 мес. назад</div></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-s" id="join">
+  <div class="cta-glow"></div>
+  <div class="cta-txt reveal">
+    <div class="eyebrow">Сообщество</div>
+    <div class="cta-q">Присоединяйся.<br><span>Возмездие ждёт.</span></div>
+    <p class="cta-sub">Обсуждаем игры, делимся мнениями — выбери платформу и заходи.</p>
+    <div class="cta-chs">
+      <a class="cch" href="https://www.youtube.com/@unagi47" target="_blank">
+        <div class="cch-icon" style="background:rgba(255,0,0,0.15);"><svg width="18" height="18" viewBox="0 0 24 24" fill="#ff4444"><path d="M10 15l5.19-3L10 9v6m11.56-7.83c.13.47.22 1.1.28 1.9.07.8.1 1.49.1 2.09L22 12c0 2.19-.16 3.8-.44 4.83-.25.9-.83 1.48-1.73 1.73-.47.13-1.33.22-2.65.28-1.3.07-2.49.1-3.59.1L12 19c-4.19 0-6.8-.16-7.83-.44-.9-.25-1.48-.83-1.73-1.73-.13-.47-.22-1.1-.28-1.9-.07-.8-.1-1.49-.1-2.09L2 12c0-2.19.16-3.8.44-4.83.25-.9.83-1.48 1.73-1.73.47-.13 1.33-.22 2.65-.28 1.3-.07 2.49-.1 3.59-.1L12 5c4.19 0 6.8.16 7.83.44.9.25 1.48.83 1.73 1.73z"/></svg></div>
+        <div><div class="cch-name">YouTube</div><div class="cch-handle">@unagi47 · 1.2K подписчиков</div></div>
+      </a>
+      <a class="cch" href="https://t.me/heartbeat_freeze" target="_blank">
+        <div class="cch-icon" style="background:rgba(41,182,246,0.15);"><svg width="18" height="18" viewBox="0 0 24 24" fill="#29b6f6"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg></div>
+        <div><div class="cch-name">Telegram</div><div class="cch-handle">t.me/heartbeat_freeze</div></div>
+      </a>
+      <a class="cch" href="https://vk.com/smile_cut" target="_blank">
+        <div class="cch-icon" style="background:rgba(71,118,230,0.15);"><svg width="18" height="18" viewBox="0 0 24 24" fill="#4776e6"><path d="M15.684 0H8.316C1.592 0 0 1.592 0 8.316v7.368C0 22.408 1.592 24 8.316 24h7.368C22.408 24 24 22.408 24 15.684V8.316C24 1.592 22.408 0 15.684 0zm3.692 17.123h-1.744c-.66 0-.864-.525-2.05-1.727-1.033-1-1.49-.938-1.743-.938-.356 0-.458.1-.458.592v1.575c0 .424-.135.678-1.253.678-1.846 0-3.896-1.118-5.335-3.202C4.624 10.857 4.03 8.57 4.03 8.096c0-.254.101-.491.593-.491h1.744c.44 0 .61.203.78.677.863 2.49 2.303 4.675 2.896 4.675.22 0 .322-.102.322-.66V9.721c-.068-1.186-.695-1.287-.695-1.71 0-.203.17-.407.44-.407h2.743c.373 0 .508.203.508.643v3.473c0 .372.17.508.271.508.22 0 .407-.136.813-.542 1.254-1.406 2.151-3.574 2.151-3.574.119-.254.322-.491.763-.491h1.744c.525 0 .643.27.525.643-.22 1.017-2.354 4.031-2.354 4.031-.186.305-.254.44 0 .78.186.254.796.779 1.203 1.253.745.847 1.32 1.558 1.473 2.05.17.49-.085.744-.609.744z"/></svg></div>
+        <div><div class="cch-name">ВКонтакте</div><div class="cch-handle">vk.com/smile_cut</div></div>
+      </a>
+    </div>
+  </div>
+  <div class="cta-img reveal">
+    <img src="https://img.youtube.com/vi/xLVY2EAa2oE/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/xLVY2EAa2oE/hqdefault.jpg'" alt="">
+  </div>
+</section>
+
+<!-- TOP -->
+<section class="section top-s" id="top">
+  <div class="eyebrow reveal">Хиты канала</div>
+  <h2 class="sec-title reveal">Самые популярные</h2>
+  <div class="tgrid reveal">
+    <a class="tcard feat" href="https://youtube.com/watch?v=W8FBm_gmL_8" target="_blank">
+      <span class="tbadge">№ 1</span>
+      <div class="tthumb"><img src="https://img.youtube.com/vi/W8FBm_gmL_8/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/W8FBm_gmL_8/hqdefault.jpg'" alt=""></div>
+      <div class="tinfo"><div class="ttitle">Зачем нужен Steam Deck в 2024 году</div><div class="tviews">234 000 просмотров</div><div class="tdesc">Честный обзор после года использования — стоит ли брать, кому подойдёт.</div></div>
+    </a>
+    <a class="tcard" href="https://youtube.com/watch?v=ecYRoZDKs7U" target="_blank">
+      <div class="tthumb"><img src="https://img.youtube.com/vi/ecYRoZDKs7U/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/ecYRoZDKs7U/hqdefault.jpg'" alt=""></div>
+      <div class="tinfo"><div class="ttitle">Я пожалел о покупке Nintendo Switch</div><div class="tviews">42 000 просмотров</div><div class="tdesc">Почему Switch не стал заменой нормальной консоли.</div></div>
+    </a>
+    <a class="tcard" href="https://youtube.com/watch?v=Zu2NAUXbqXA" target="_blank">
+      <div class="tthumb"><img src="https://img.youtube.com/vi/Zu2NAUXbqXA/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/Zu2NAUXbqXA/hqdefault.jpg'" alt=""></div>
+      <div class="tinfo"><div class="ttitle">Детальный разбор Marvel Spider-Man 2</div><div class="tviews">8 000 просмотров</div><div class="tdesc">Всё что нужно знать — геймплей, история, технические детали.</div></div>
+    </a>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="flogo">Smile Cut</div>
+  <nav class="fnav">
+    <a href="#videos">Видео</a>
+    <a href="#join">Сообщество</a>
+    <a href="#top">Популярные</a>
+    <a href="videos.html">Все видео</a>
+    <a href="https://www.youtube.com/@unagi47" target="_blank">YouTube</a>
+    <a href="https://t.me/heartbeat_freeze" target="_blank">Telegram</a>
+    <a href="https://vk.com/smile_cut" target="_blank">ВК</a>
+  </nav>
+  <div class="fcopy">Smile Cut · @unagi47</div>
+</footer>
+
+<script>
+const obs=new IntersectionObserver((e)=>{e.forEach((el,i)=>{if(el.isIntersecting){setTimeout(()=>el.target.classList.add('visible'),i*100);obs.unobserve(el.target);}});},{threshold:0.07});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+document.getElementById('tl').addEventListener('click',()=>{
+  const pw=document.getElementById('pw');
+  const yt=document.getElementById('yt');
+  yt.src='https://www.youtube.com/embed/twyM_giCq8g?autoplay=1&rel=0';
+  pw.classList.add('playing');
+});
+</script>
+</body>
+</html>
