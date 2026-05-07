@@ -228,14 +228,15 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overf
 @media(max-width:1024px) and (min-width:769px){
   .hero{padding:2.5rem 2rem;gap:2rem;}
   .section{padding:4rem 2rem;}
-  /* TG */
   .tg-s{padding:4rem 2rem;}
   .tg-feed{grid-template-columns:1fr 1fr;}
   .cta-s{padding:4rem 2rem;gap:2.5rem;}
   .tgrid{grid-template-columns:1.4fr 1fr 1fr;}
   .footer{padding:1.5rem 2rem;}
   .vscroll-wrap{margin:0 -2rem;padding:0 2rem 1rem;}
-/* === ABOUT / КТО ЗА КАНАЛОМ === */
+}
+
+/* === ABOUT === */
 .about-s{background:var(--bg3);padding:5rem 3rem;position:relative;overflow:hidden;}
 .about-s::before{content:'';position:absolute;left:-150px;bottom:-150px;width:500px;height:500px;background:radial-gradient(circle,rgba(224,64,160,.06) 0%,transparent 70%);border-radius:50%;pointer-events:none;}
 .about-inner{display:grid;grid-template-columns:1fr 1.6fr;gap:5rem;align-items:center;position:relative;z-index:1;}
@@ -243,7 +244,6 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overf
 .about-avatar{width:160px;height:160px;border-radius:50%;object-fit:cover;border:3px solid rgba(224,64,160,.4);box-shadow:0 0 40px rgba(224,64,160,.2),0 0 80px rgba(123,47,255,.1);}
 .about-channel-name{font-family:'Oswald',sans-serif;font-size:1.1rem;font-weight:700;color:var(--text);letter-spacing:.06em;text-align:center;}
 .about-handle{font-size:.8rem;color:var(--muted);text-align:center;margin-top:.2rem;}
-.about-content{}
 .about-quote{font-family:'Oswald',sans-serif;font-size:clamp(1.4rem,2.5vw,2rem);font-weight:700;color:var(--text);line-height:1.15;margin-bottom:1.2rem;}
 .about-quote em{font-style:normal;background:linear-gradient(90deg,var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
 .about-text{font-size:.95rem;color:var(--muted);line-height:1.8;margin-bottom:2rem;}
@@ -251,49 +251,33 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overf
 .about-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);padding:6px 14px;border-radius:20px;font-size:.78rem;color:var(--text);letter-spacing:.04em;}
 .about-pill-icon{font-size:.9rem;}
 
-/* === МОБИЛКА — дополнительные фиксы === */
+/* === STICKY CTA === */
+.sticky-cta{position:fixed;bottom:1.5rem;right:1.5rem;z-index:200;display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#ff0000,#cc0000);color:#fff;padding:.7rem 1.4rem;border-radius:30px;font-size:.8rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;box-shadow:0 4px 24px rgba(255,0,0,.35);transform:translateY(80px);opacity:0;transition:transform .4s cubic-bezier(.34,1.56,.64,1),opacity .3s;pointer-events:none;}
+.sticky-cta.visible{transform:translateY(0);opacity:1;pointer-events:auto;}
+.sticky-cta:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 6px 32px rgba(255,0,0,.5);}
+.sticky-cta svg{width:16px;height:16px;fill:currentColor;flex-shrink:0;}
+
+/* === MOBILE EXTRA === */
 @media(max-width:768px){
-  /* About */
   .about-s{padding:3rem 1.2rem;}
-  .about-inner{grid-template-columns:1fr;gap:2.5rem;text-align:center;}
+  .about-inner{grid-template-columns:1fr;gap:2rem;text-align:center;}
   .about-avatar-wrap{flex-direction:row;justify-content:center;gap:1.2rem;align-items:center;}
   .about-avatar{width:80px;height:80px;}
   .about-content{text-align:left;}
   .about-quote{font-size:1.3rem;}
-  /* Hero — скрываем play-note на маленьких */
   .play-note{display:none;}
-  /* Stats — компактнее */
   .hero-stats{gap:1rem;}
   .stat-val{font-size:1.3rem;}
   .stat-lab{font-size:.65rem;}
+  .sticky-cta{bottom:1rem;right:1rem;padding:.6rem 1.1rem;font-size:.72rem;}
 }
 @media(max-width:480px){
-  /* Очень маленькие телефоны */
   .hero{padding:1.8rem 1rem 2.5rem;}
   .hero h1{font-size:2.2rem;}
   .hero-btns{flex-direction:column;gap:8px;}
   .btn-primary,.btn-ghost{width:100%;justify-content:center;}
   .tg-post-thumb,.tg-post-thumb-placeholder,.tg-sk-thumb{width:52px;height:52px;}
   .tgrid{gap:.8rem;}
-}
-</style>
-.sticky-cta{
-  position:fixed;bottom:1.5rem;right:1.5rem;z-index:200;
-  display:flex;align-items:center;gap:10px;
-  background:linear-gradient(135deg,#ff0000,#cc0000);
-  color:#fff;padding:.7rem 1.4rem;border-radius:30px;
-  font-size:.8rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
-  text-decoration:none;
-  box-shadow:0 4px 24px rgba(255,0,0,.35);
-  transform:translateY(80px);opacity:0;
-  transition:transform .4s cubic-bezier(.34,1.56,.64,1),opacity .3s;
-  pointer-events:none;
-}
-.sticky-cta.visible{transform:translateY(0);opacity:1;pointer-events:auto;}
-.sticky-cta:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 6px 32px rgba(255,0,0,.5);}
-.sticky-cta svg{width:16px;height:16px;fill:currentColor;flex-shrink:0;}
-@media(max-width:768px){
-  .sticky-cta{bottom:1rem;right:1rem;padding:.6rem 1.1rem;font-size:.72rem;}
 }
 </style>
 <!-- Schema.org — Google покажет видео прямо в поиске -->
