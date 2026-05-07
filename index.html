@@ -3,7 +3,34 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Smile Cut — Мы все здесь ради возмездия</title>
+
+<!-- SEO -->
+<title>Smile Cut | Обзоры игр — YouTube канал @unagi47</title>
+<meta name="description" content="Smile Cut — честные обзоры и разборы игр без воды. Steam Deck, Shadow of the Erdtree, инди и блокбастеры. 49 видео, 594К просмотров.">
+<meta name="keywords" content="обзоры игр, YouTube канал, игровой блогер, Steam Deck, RPG, Elden Ring, Atomic Heart, Smile Cut">
+<meta name="author" content="Smile Cut">
+<link rel="canonical" href="https://unagi47.github.io/smile-cut/">
+
+<!-- Open Graph — красивые карточки при шаринге в ВК, ТГ, соцсетях -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Smile Cut">
+<meta property="og:title" content="Smile Cut | Обзоры и разборы игр">
+<meta property="og:description" content="Честный взгляд на игры — от Steam Deck до Shadow of the Erdtree. Без рекламы, без воды. 594К просмотров.">
+<meta property="og:image" content="https://img.youtube.com/vi/W8FBm_gmL_8/maxresdefault.jpg">
+<meta property="og:url" content="https://unagi47.github.io/smile-cut/">
+<meta property="og:locale" content="ru_RU">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Smile Cut | Обзоры и разборы игр">
+<meta name="twitter:description" content="Честный взгляд на игры. 49 видео, 594К просмотров.">
+<meta name="twitter:image" content="https://img.youtube.com/vi/W8FBm_gmL_8/maxresdefault.jpg">
+
+<!-- Favicon — inline SVG, всегда работает без 404 -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%231a1a28'/><text y='.9em' font-size='80' x='10'>🎮</text></svg>">
+<link rel="apple-touch-icon" href="https://yt3.googleusercontent.com/ytc/AIdro_mJnTs8xH7hUFUFTbLmz6wlEx0-MKy2DgX3BGnJ2g=s88-c-k-c0x00ffffff-no-rj">
+
+<!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -208,8 +235,95 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overf
   .tgrid{grid-template-columns:1.4fr 1fr 1fr;}
   .footer{padding:1.5rem 2rem;}
   .vscroll-wrap{margin:0 -2rem;padding:0 2rem 1rem;}
+/* === ABOUT / КТО ЗА КАНАЛОМ === */
+.about-s{background:var(--bg3);padding:5rem 3rem;position:relative;overflow:hidden;}
+.about-s::before{content:'';position:absolute;left:-150px;bottom:-150px;width:500px;height:500px;background:radial-gradient(circle,rgba(224,64,160,.06) 0%,transparent 70%);border-radius:50%;pointer-events:none;}
+.about-inner{display:grid;grid-template-columns:1fr 1.6fr;gap:5rem;align-items:center;position:relative;z-index:1;}
+.about-avatar-wrap{display:flex;flex-direction:column;align-items:center;gap:1.5rem;}
+.about-avatar{width:160px;height:160px;border-radius:50%;object-fit:cover;border:3px solid rgba(224,64,160,.4);box-shadow:0 0 40px rgba(224,64,160,.2),0 0 80px rgba(123,47,255,.1);}
+.about-channel-name{font-family:'Oswald',sans-serif;font-size:1.1rem;font-weight:700;color:var(--text);letter-spacing:.06em;text-align:center;}
+.about-handle{font-size:.8rem;color:var(--muted);text-align:center;margin-top:.2rem;}
+.about-content{}
+.about-quote{font-family:'Oswald',sans-serif;font-size:clamp(1.4rem,2.5vw,2rem);font-weight:700;color:var(--text);line-height:1.15;margin-bottom:1.2rem;}
+.about-quote em{font-style:normal;background:linear-gradient(90deg,var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.about-text{font-size:.95rem;color:var(--muted);line-height:1.8;margin-bottom:2rem;}
+.about-pills{display:flex;flex-wrap:wrap;gap:8px;}
+.about-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);padding:6px 14px;border-radius:20px;font-size:.78rem;color:var(--text);letter-spacing:.04em;}
+.about-pill-icon{font-size:.9rem;}
+
+/* === МОБИЛКА — дополнительные фиксы === */
+@media(max-width:768px){
+  /* About */
+  .about-s{padding:3rem 1.2rem;}
+  .about-inner{grid-template-columns:1fr;gap:2.5rem;text-align:center;}
+  .about-avatar-wrap{flex-direction:row;justify-content:center;gap:1.2rem;align-items:center;}
+  .about-avatar{width:80px;height:80px;}
+  .about-content{text-align:left;}
+  .about-quote{font-size:1.3rem;}
+  /* Hero — скрываем play-note на маленьких */
+  .play-note{display:none;}
+  /* Stats — компактнее */
+  .hero-stats{gap:1rem;}
+  .stat-val{font-size:1.3rem;}
+  .stat-lab{font-size:.65rem;}
+}
+@media(max-width:480px){
+  /* Очень маленькие телефоны */
+  .hero{padding:1.8rem 1rem 2.5rem;}
+  .hero h1{font-size:2.2rem;}
+  .hero-btns{flex-direction:column;gap:8px;}
+  .btn-primary,.btn-ghost{width:100%;justify-content:center;}
+  .tg-post-thumb,.tg-post-thumb-placeholder,.tg-sk-thumb{width:52px;height:52px;}
+  .tgrid{gap:.8rem;}
 }
 </style>
+.sticky-cta{
+  position:fixed;bottom:1.5rem;right:1.5rem;z-index:200;
+  display:flex;align-items:center;gap:10px;
+  background:linear-gradient(135deg,#ff0000,#cc0000);
+  color:#fff;padding:.7rem 1.4rem;border-radius:30px;
+  font-size:.8rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  text-decoration:none;
+  box-shadow:0 4px 24px rgba(255,0,0,.35);
+  transform:translateY(80px);opacity:0;
+  transition:transform .4s cubic-bezier(.34,1.56,.64,1),opacity .3s;
+  pointer-events:none;
+}
+.sticky-cta.visible{transform:translateY(0);opacity:1;pointer-events:auto;}
+.sticky-cta:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 6px 32px rgba(255,0,0,.5);}
+.sticky-cta svg{width:16px;height:16px;fill:currentColor;flex-shrink:0;}
+@media(max-width:768px){
+  .sticky-cta{bottom:1rem;right:1rem;padding:.6rem 1.1rem;font-size:.72rem;}
+}
+</style>
+<!-- Schema.org — Google покажет видео прямо в поиске -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Smile Cut | Обзоры игр — YouTube канал",
+  "description": "Smile Cut — честные обзоры и разборы игр без воды. Steam Deck, Shadow of the Erdtree, инди и блокбастеры.",
+  "url": "https://unagi47.github.io/smile-cut/",
+  "author": {
+    "@type": "Person",
+    "name": "Smile Cut",
+    "url": "https://www.youtube.com/@unagi47",
+    "sameAs": [
+      "https://www.youtube.com/@unagi47",
+      "https://t.me/heartbeat_freeze",
+      "https://vk.com/smile_cut"
+    ]
+  },
+  "mainEntity": {
+    "@type": "VideoObject",
+    "name": "Зачем нужен Steam Deck в 2024 году",
+    "description": "Честный обзор после года использования — стоит ли брать, кому подойдёт.",
+    "thumbnailUrl": "https://img.youtube.com/vi/W8FBm_gmL_8/maxresdefault.jpg",
+    "uploadDate": "2024-01-01",
+    "embedUrl": "https://www.youtube.com/embed/W8FBm_gmL_8"
+  }
+}
+</script>
 </head>
 <body>
 
@@ -217,11 +331,17 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overf
   <a class="nav-logo" href="index.html">Smile Cut</a>
   <div class="nav-links">
     <a href="index.html" class="active">Главная</a>
-    <a href="#join">Сообщество</a>
+    <a href="#about">О канале</a>
     <a href="#top">Популярные</a>
     <a href="videos.html">Все видео</a>
   </div>
 </nav>
+
+<!-- Sticky CTA — появляется после скролла 40% -->
+<a class="sticky-cta" id="stickyCta" href="https://www.youtube.com/@unagi47?sub_confirmation=1" target="_blank">
+  <svg viewBox="0 0 24 24"><path d="M10 15l5.19-3L10 9v6m11.56-7.83c.13.47.22 1.1.28 1.9.07.8.1 1.49.1 2.09L22 12c0 2.19-.16 3.8-.44 4.83-.25.9-.83 1.48-1.73 1.73-.47.13-1.33.22-2.65.28-1.3.07-2.49.1-3.59.1L12 19c-4.19 0-6.8-.16-7.83-.44-.9-.25-1.48-.83-1.73-1.73-.13-.47-.22-1.1-.28-1.9-.07-.8-.1-1.49-.1-2.09L2 12c0-2.19.16-3.8.44-4.83.25-.9.83-1.48 1.73-1.73.47-.13 1.33-.22 2.65-.28 1.3-.07 2.49-.1 3.59-.1L12 5c4.19 0 6.8.16 7.83.44.9.25 1.48.83 1.73 1.73z"/></svg>
+  Подписаться
+</a>
 
 <section class="hero">
   <div class="hero-bg"></div><div class="hero-grid"></div>
@@ -270,12 +390,40 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overf
   </div>
   <div class="vscroll-wrap">
     <div class="vgrid">
-      <a class="vcard" href="https://youtube.com/watch?v=twyM_giCq8g" target="_blank"><div class="vthumb"><img src="https://img.youtube.com/vi/twyM_giCq8g/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/twyM_giCq8g/hqdefault.jpg'" alt=""><span class="vdur">21:02</span></div><div class="vinfo"><div class="vtitle">Я играл, меня пугали в Resident Evil Requiem</div><div class="vmeta"><span>262</span> просмотра · 2 нед. назад</div></div></a>
-      <a class="vcard" href="https://youtube.com/watch?v=xLVY2EAa2oE" target="_blank"><div class="vthumb"><img src="https://img.youtube.com/vi/xLVY2EAa2oE/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/xLVY2EAa2oE/hqdefault.jpg'" alt=""><span class="vdur">15:09</span></div><div class="vinfo"><div class="vtitle">Мы неправильно играли в RPG</div><div class="vmeta"><span>1 тыс.</span> просмотров · 1 мес. назад</div></div></a>
-      <a class="vcard" href="https://youtube.com/watch?v=haTx-vsEQrw" target="_blank"><div class="vthumb"><img src="https://img.youtube.com/vi/haTx-vsEQrw/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/haTx-vsEQrw/hqdefault.jpg'" alt=""><span class="vdur">18:30</span></div><div class="vinfo"><div class="vtitle">Убить Билла в Ghost of Yotei</div><div class="vmeta"><span>121</span> просмотр · 4 мес. назад</div></div></a>
-      <a class="vcard" href="https://youtube.com/watch?v=c-ElmXhr2BU" target="_blank"><div class="vthumb"><img src="https://img.youtube.com/vi/c-ElmXhr2BU/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/c-ElmXhr2BU/hqdefault.jpg'" alt=""><span class="vdur">16:07</span></div><div class="vinfo"><div class="vtitle">Властелин щита и Ктулху в DOOM: TDA</div><div class="vmeta"><span>858</span> просмотров · 10 мес. назад</div></div></a>
-      <a class="vcard" href="https://youtube.com/watch?v=d_rlekxNksk" target="_blank"><div class="vthumb"><img src="https://img.youtube.com/vi/d_rlekxNksk/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/d_rlekxNksk/hqdefault.jpg'" alt=""><span class="vdur">23:10</span></div><div class="vinfo"><div class="vtitle">Секрет успеха Clair Obscur: Expedition 33</div><div class="vmeta"><span>423</span> просмотра · 11 мес. назад</div></div></a>
-      <a class="vcard" href="https://youtube.com/watch?v=PlA5jEhxKjg" target="_blank"><div class="vthumb"><img src="https://img.youtube.com/vi/PlA5jEhxKjg/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/PlA5jEhxKjg/hqdefault.jpg'" alt=""><span class="vdur">16:06</span></div><div class="vinfo"><div class="vtitle">Шокирующая тайна Silent Hill</div><div class="vmeta"><span>8.5 тыс.</span> просмотров · 11 мес. назад</div></div></a>
+      <a class="vcard" href="https://youtube.com/watch?v=twyM_giCq8g" target="_blank"><div class="vthumb"><img src="https://img.youtube.com/vi/twyM_giCq8g/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/twyM_giCq8g/hqdefault.jpg'" alt="Я играл, меня пугали в Resident Evil Requiem"><span class="vdur">21:02</span></div><div class="vinfo"><div class="vtitle">Я играл, меня пугали в Resident Evil Requiem</div><div class="vmeta"><span>262</span> просмотра · 2 нед. назад</div></div></a>
+      <a class="vcard" href="https://youtube.com/watch?v=xLVY2EAa2oE" target="_blank"><div class="vthumb"><img src="https://img.youtube.com/vi/xLVY2EAa2oE/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/xLVY2EAa2oE/hqdefault.jpg'" alt="Мы неправильно играли в RPG"><span class="vdur">15:09</span></div><div class="vinfo"><div class="vtitle">Мы неправильно играли в RPG</div><div class="vmeta"><span>1 тыс.</span> просмотров · 1 мес. назад</div></div></a>
+      <a class="vcard" href="https://youtube.com/watch?v=haTx-vsEQrw" target="_blank"><div class="vthumb"><img src="https://img.youtube.com/vi/haTx-vsEQrw/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/haTx-vsEQrw/hqdefault.jpg'" alt="Убить Билла в Ghost of Yotei"><span class="vdur">18:30</span></div><div class="vinfo"><div class="vtitle">Убить Билла в Ghost of Yotei</div><div class="vmeta"><span>121</span> просмотр · 4 мес. назад</div></div></a>
+      <a class="vcard" href="https://youtube.com/watch?v=c-ElmXhr2BU" target="_blank"><div class="vthumb"><img src="https://img.youtube.com/vi/c-ElmXhr2BU/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/c-ElmXhr2BU/hqdefault.jpg'" alt="Властелин щита и Ктулху в DOOM: TDA"><span class="vdur">16:07</span></div><div class="vinfo"><div class="vtitle">Властелин щита и Ктулху в DOOM: TDA</div><div class="vmeta"><span>858</span> просмотров · 10 мес. назад</div></div></a>
+      <a class="vcard" href="https://youtube.com/watch?v=d_rlekxNksk" target="_blank"><div class="vthumb"><img src="https://img.youtube.com/vi/d_rlekxNksk/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/d_rlekxNksk/hqdefault.jpg'" alt="Секрет успеха Clair Obscur: Expedition 33"><span class="vdur">23:10</span></div><div class="vinfo"><div class="vtitle">Секрет успеха Clair Obscur: Expedition 33</div><div class="vmeta"><span>423</span> просмотра · 11 мес. назад</div></div></a>
+      <a class="vcard" href="https://youtube.com/watch?v=PlA5jEhxKjg" target="_blank"><div class="vthumb"><img src="https://img.youtube.com/vi/PlA5jEhxKjg/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/PlA5jEhxKjg/hqdefault.jpg'" alt="Шокирующая тайна Silent Hill"><span class="vdur">16:06</span></div><div class="vinfo"><div class="vtitle">Шокирующая тайна Silent Hill</div><div class="vmeta"><span>8.5 тыс.</span> просмотров · 11 мес. назад</div></div></a>
+    </div>
+  </div>
+</section>
+
+<!-- О КАНАЛЕ — кто за ним стоит -->
+<section class="about-s" id="about">
+  <div class="about-inner">
+    <div class="about-avatar-wrap">
+      <img class="about-avatar"
+        src="https://yt3.googleusercontent.com/ytc/AIdro_mJnTs8xH7hUFUFTbLmz6wlEx0-MKy2DgX3BGnJ2g=s88-c-k-c0x00ffffff-no-rj"
+        onerror="this.src='https://img.youtube.com/vi/W8FBm_gmL_8/maxresdefault.jpg'"
+        alt="Smile Cut — аватар YouTube канала">
+      <div>
+        <div class="about-channel-name">Smile Cut</div>
+        <div class="about-handle">@unagi47</div>
+      </div>
+    </div>
+    <div class="about-content">
+      <div class="eyebrow">О канале</div>
+      <h2 class="about-quote">Мы все здесь<br>ради <em>честного взгляда</em> на игры</h2>
+      <p class="about-text">Smile Cut — это канал про игры без рекламных интеграций и без желания понравиться всем. Разборы больших релизов, неожиданные находки в инди, мнения о железе и индустрии в целом. Если игра плохая — скажем. Если хорошая — тоже скажем, и объясним почему.</p>
+      <div class="about-pills">
+        <span class="about-pill"><span class="about-pill-icon">🎮</span> Обзоры игр</span>
+        <span class="about-pill"><span class="about-pill-icon">🔍</span> Разборы</span>
+        <span class="about-pill"><span class="about-pill-icon">🖥</span> Железо</span>
+        <span class="about-pill"><span class="about-pill-icon">🎯</span> Без воды</span>
+        <span class="about-pill"><span class="about-pill-icon">🚫</span> Без рекламы</span>
+      </div>
     </div>
   </div>
 </section>
@@ -323,7 +471,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overf
     </div>
   </div>
   <div class="cta-img">
-    <img src="https://img.youtube.com/vi/xLVY2EAa2oE/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/xLVY2EAa2oE/hqdefault.jpg'" alt="">
+    <img src="https://img.youtube.com/vi/xLVY2EAa2oE/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/xLVY2EAa2oE/hqdefault.jpg'" alt="Мы неправильно играли в RPG — видео Smile Cut">
   </div>
 </section>
 
@@ -332,18 +480,30 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overf
   <div class="eyebrow">Хиты канала</div>
   <h2 class="sec-title">Самые популярные</h2>
   <div class="tgrid">
-    <a class="tcard feat" href="https://youtube.com/watch?v=W8FBm_gmL_8" target="_blank">
+    <a class="tcard feat" href="https://youtube.com/watch?v=W8FBm_gmL_8" target="_blank" aria-label="Смотреть: Зачем нужен Steam Deck в 2024 году">
       <span class="tbadge">№ 1</span>
-      <div class="tthumb"><img src="https://img.youtube.com/vi/W8FBm_gmL_8/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/W8FBm_gmL_8/hqdefault.jpg'" alt=""></div>
-      <div class="tinfo"><div class="ttitle">Зачем нужен Steam Deck в 2024 году</div><div class="tviews">234 000 просмотров</div><div class="tdesc">Честный обзор после года использования — стоит ли брать, кому подойдёт.</div></div>
+      <div class="tthumb"><img src="https://img.youtube.com/vi/W8FBm_gmL_8/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/W8FBm_gmL_8/hqdefault.jpg'" alt="Зачем нужен Steam Deck в 2024 году — обзор Smile Cut"></div>
+      <div class="tinfo">
+        <div class="ttitle">Зачем нужен Steam Deck в 2024 году</div>
+        <div class="tviews" style="font-size:1.1rem;margin-bottom:5px;">👁 234 000 просмотров</div>
+        <div class="tdesc">Честный обзор после года использования — стоит ли брать, кому подойдёт.</div>
+      </div>
     </a>
-    <a class="tcard" href="https://youtube.com/watch?v=ecYRoZDKs7U" target="_blank">
-      <div class="tthumb"><img src="https://img.youtube.com/vi/ecYRoZDKs7U/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/ecYRoZDKs7U/hqdefault.jpg'" alt=""></div>
-      <div class="tinfo"><div class="ttitle">Я пожалел о покупке Nintendo Switch</div><div class="tviews">42 000 просмотров</div><div class="tdesc">Почему Switch не стал заменой нормальной консоли.</div></div>
+    <a class="tcard" href="https://youtube.com/watch?v=ecYRoZDKs7U" target="_blank" aria-label="Смотреть: Я пожалел о покупке Nintendo Switch">
+      <div class="tthumb"><img src="https://img.youtube.com/vi/ecYRoZDKs7U/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/ecYRoZDKs7U/hqdefault.jpg'" alt="Я пожалел о покупке Nintendo Switch в 2023 году — обзор Smile Cut"></div>
+      <div class="tinfo">
+        <div class="ttitle">Я пожалел о покупке Nintendo Switch</div>
+        <div class="tviews" style="font-size:1.1rem;margin-bottom:5px;">👁 42 000 просмотров</div>
+        <div class="tdesc">Почему Switch не стал заменой нормальной консоли и чего не хватило.</div>
+      </div>
     </a>
-    <a class="tcard" href="https://youtube.com/watch?v=dC24KgDiNe8" target="_blank">
-      <div class="tthumb"><img src="https://img.youtube.com/vi/dC24KgDiNe8/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/dC24KgDiNe8/hqdefault.jpg'" alt=""></div>
-      <div class="tinfo"><div class="ttitle">СССР, секс и роботы в Atomic Heart</div><div class="tviews">12 000 просмотров</div><div class="tdesc">Детальный разбор — что хотели сказать авторы и почему игра вызвала споры.</div></div>
+    <a class="tcard" href="https://youtube.com/watch?v=dC24KgDiNe8" target="_blank" aria-label="Смотреть: СССР, секс и роботы в Atomic Heart">
+      <div class="tthumb"><img src="https://img.youtube.com/vi/dC24KgDiNe8/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/dC24KgDiNe8/hqdefault.jpg'" alt="СССР, секс и роботы в Atomic Heart — разбор Smile Cut"></div>
+      <div class="tinfo">
+        <div class="ttitle">СССР, секс и роботы в Atomic Heart</div>
+        <div class="tviews" style="font-size:1.1rem;margin-bottom:5px;">👁 12 000 просмотров</div>
+        <div class="tdesc">Детальный разбор — что хотели сказать авторы и почему игра вызвала споры.</div>
+      </div>
     </a>
   </div>
 </section>
@@ -352,15 +512,14 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overf
   <div class="flogo">Smile Cut</div>
   <nav class="fnav">
     <a href="#videos">Видео</a>
+    <a href="#about">О канале</a>
     <a href="#tg">Telegram</a>
-    <a href="#join">Сообщество</a>
     <a href="#top">Популярные</a>
     <a href="videos.html">Все видео</a>
     <a href="https://www.youtube.com/@unagi47" target="_blank">YouTube</a>
-    <a href="https://t.me/heartbeat_freeze" target="_blank">TG</a>
-    <a href="https://vk.com/smile_cut" target="_blank">ВК</a>
+    <a href="https://vk.com/smile_cut" target="_blank">ВКонтакте</a>
   </nav>
-  <div class="fcopy">Smile Cut · @unagi47</div>
+  <div class="fcopy">© 2026 Smile Cut · @unagi47</div>
 </footer>
 
 <script>
@@ -372,109 +531,179 @@ document.getElementById('tl').addEventListener('click',function(){
 });
 
 // ============================================================
-// TELEGRAM LIVE FEED — horizontal card layout
+// TELEGRAM LIVE FEED — с кэшем и быстрым прокси
+// Логика: показываем кэш мгновенно → грузим свежее в фоне
 // ============================================================
-async function loadTgFeed() {
+(function(){
+  var CHANNEL   = 'heartbeat_freeze';
+  var CACHE_KEY = 'tg_feed_v2';
+  var CACHE_TTL = 10 * 60 * 1000; // 10 минут
+
+  // Только рабочий прокси — corsproxy.io (allorigins.win упал, 503)
+  var PROXY = 'https://corsproxy.io/?';
+  var TIMEOUT = 5000; // 5 сек — не 8
+
   var feed = document.getElementById('tgFeed');
-  var channel = 'heartbeat_freeze';
-
-  var proxies = [
-    'https://api.allorigins.win/raw?url=',
-    'https://corsproxy.io/?'
-  ];
-
-  var html = null;
-  for (var i = 0; i < proxies.length; i++) {
-    try {
-      var url = proxies[i] + encodeURIComponent('https://t.me/s/' + channel);
-      var res = await fetch(url, { signal: AbortSignal.timeout(8000) });
-      if (res.ok) { html = await res.text(); break; }
-    } catch(e) { continue; }
-  }
-
-  if (!html) { showFallback(feed, channel); return; }
-
-  var parser = new DOMParser();
-  var doc = parser.parseFromString(html, 'text/html');
-  var messages = doc.querySelectorAll('.tgme_widget_message_wrap');
-  if (!messages.length) { showFallback(feed, channel); return; }
-
-  var items = Array.from(messages).slice(-6).reverse();
-  feed.innerHTML = '';
 
   var tgIcon = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg>';
 
-  items.forEach(function(msg) {
-    var textEl  = msg.querySelector('.tgme_widget_message_text');
-    var dateEl  = msg.querySelector('.tgme_widget_message_date time');
-    var viewsEl = msg.querySelector('.tgme_widget_message_views');
-    var linkEl  = msg.querySelector('.tgme_widget_message_date a');
-    var imgEl   = msg.querySelector('.tgme_widget_message_photo_wrap');
-    var videoEl = msg.querySelector('.tgme_widget_message_video_thumb');
+  // ---------- Разбор HTML → массив постов ----------
+  function parsePosts(html) {
+    var parser = new DOMParser();
+    var doc = parser.parseFromString(html, 'text/html');
+    var messages = doc.querySelectorAll('.tgme_widget_message_wrap');
+    if (!messages.length) return null;
 
-    var text = textEl ? (textEl.innerText || textEl.textContent).trim() : '';
-    if (!text && !imgEl && !videoEl) return;
+    var posts = [];
+    Array.from(messages).slice(-6).reverse().forEach(function(msg) {
+      var textEl  = msg.querySelector('.tgme_widget_message_text');
+      var dateEl  = msg.querySelector('.tgme_widget_message_date time');
+      var viewsEl = msg.querySelector('.tgme_widget_message_views');
+      var linkEl  = msg.querySelector('.tgme_widget_message_date a');
+      var imgEl   = msg.querySelector('.tgme_widget_message_photo_wrap');
+      var videoEl = msg.querySelector('.tgme_widget_message_video_thumb');
 
-    var date = '';
-    if (dateEl) {
-      var dt = dateEl.getAttribute('datetime') || '';
-      if (dt) {
-        var d = new Date(dt);
-        date = d.toLocaleDateString('ru-RU', {day:'numeric', month:'long'});
+      var text = textEl ? (textEl.innerText || textEl.textContent).trim() : '';
+      if (!text && !imgEl && !videoEl) return;
+
+      var date = '';
+      if (dateEl) {
+        var dt = dateEl.getAttribute('datetime') || '';
+        if (dt) {
+          date = new Date(dt).toLocaleDateString('ru-RU', {day:'numeric', month:'long'});
+        }
       }
+
+      var imgUrl = '';
+      var src = imgEl || videoEl;
+      if (src) {
+        var m = (src.getAttribute('style') || '').match(/url\(['"]?([^'"]+)['"]?\)/);
+        if (m) imgUrl = m[1];
+      }
+
+      posts.push({
+        text:  text.substring(0, 140) + (text.length > 140 ? '…' : ''),
+        date:  date || 'недавно',
+        views: viewsEl ? viewsEl.textContent.trim() : '',
+        link:  linkEl ? linkEl.href : 'https://t.me/' + CHANNEL,
+        img:   imgUrl
+      });
+    });
+    return posts.length ? posts : null;
+  }
+
+  // ---------- Рендер постов ----------
+  function renderPosts(posts) {
+    feed.innerHTML = '';
+    posts.forEach(function(p) {
+      var thumb = p.img
+        ? '<img class="tg-post-thumb" src="' + p.img + '" alt="" loading="lazy">'
+        : '<div class="tg-post-thumb-placeholder">' + tgIcon + '</div>';
+
+      var meta = '<div class="tg-post-meta"><span class="tg-dot"></span>'
+        + '<span class="tg-post-date">' + p.date + '</span>'
+        + (p.views ? '<span class="tg-post-views">👁 ' + p.views + '</span>' : '')
+        + '</div>';
+
+      var card = '<a class="tg-post" href="' + p.link + '" target="_blank">'
+        + thumb + '<div class="tg-post-body">' + meta
+        + (p.text ? '<div class="tg-post-text">' + p.text + '</div>' : '')
+        + '<span class="tg-post-arrow">Читать в Telegram →</span>'
+        + '</div></a>';
+
+      var d = document.createElement('div');
+      d.innerHTML = card;
+      feed.appendChild(d.firstChild);
+    });
+  }
+
+  // ---------- Fallback — кнопка открыть TG ----------
+  function showFallback() {
+    feed.innerHTML = '<div class="tg-error"><p>Не удалось загрузить ленту</p>'
+      + '<a class="tg-btn" href="https://t.me/s/' + CHANNEL + '" target="_blank" style="display:inline-flex">'
+      + tgIcon.replace('viewBox', 'width="15" height="15" viewBox') + ' Открыть в Telegram</a></div>';
+  }
+
+  // ---------- Сохранить кэш ----------
+  function saveCache(posts) {
+    try {
+      localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), posts: posts }));
+    } catch(e) {}
+  }
+
+  // ---------- Читать кэш ----------
+  function loadCache() {
+    try {
+      var raw = localStorage.getItem(CACHE_KEY);
+      if (!raw) return null;
+      var c = JSON.parse(raw);
+      if (Date.now() - c.ts > CACHE_TTL) return null; // устарел
+      return c.posts;
+    } catch(e) { return null; }
+  }
+
+  // ---------- Загрузка с сети ----------
+  async function fetchFresh() {
+    try {
+      var controller = new AbortController();
+      var timer = setTimeout(function(){ controller.abort(); }, TIMEOUT);
+      var res = await fetch(PROXY + encodeURIComponent('https://t.me/s/' + CHANNEL), {
+        signal: controller.signal
+      });
+      clearTimeout(timer);
+      if (!res.ok) return null;
+      var html = await res.text();
+      return parsePosts(html);
+    } catch(e) {
+      return null;
+    }
+  }
+
+  // ---------- Главная функция ----------
+  async function init() {
+    // 1. Мгновенно показываем кэш если есть
+    var cached = loadCache();
+    if (cached) {
+      renderPosts(cached);
     }
 
-    var views = viewsEl ? viewsEl.textContent.trim() : '';
-    var link  = linkEl  ? linkEl.href : 'https://t.me/' + channel;
-
-    // Get thumbnail from photo or video
-    var imgUrl = '';
-    var sourceEl = imgEl || videoEl;
-    if (sourceEl) {
-      var style = sourceEl.getAttribute('style') || '';
-      var m = style.match(/url\(['"]?([^'"]+)['"]?\)/);
-      if (m) imgUrl = m[1];
+    // 2. Грузим свежее в фоне (не блокируем страницу)
+    var fresh = await fetchFresh();
+    if (fresh) {
+      renderPosts(fresh);
+      saveCache(fresh);
+    } else if (!cached) {
+      // Кэша нет и сеть не ответила
+      showFallback();
     }
+    // Если кэш есть но сеть не ответила — оставляем кэш, не показываем ошибку
+  }
 
-    // Build card
-    var thumbHtml = imgUrl
-      ? '<img class="tg-post-thumb" src="' + imgUrl + '" alt="" loading="lazy">'
-      : '<div class="tg-post-thumb-placeholder">' + tgIcon + '</div>';
+  // Запуск
+  init();
 
-    var shortText = text.substring(0, 120) + (text.length > 120 ? '…' : '');
+  // Фоновое обновление каждые 10 минут (не 5 — меньше нагрузки на прокси)
+  setInterval(async function(){
+    var fresh = await fetchFresh();
+    if (fresh) { renderPosts(fresh); saveCache(fresh); }
+  }, 10 * 60 * 1000);
+})();
 
-    var metaHtml = '<div class="tg-post-meta">'
-      + '<span class="tg-dot"></span>'
-      + '<span class="tg-post-date">' + (date || 'недавно') + '</span>'
-      + (views ? '<span class="tg-post-views">👁 ' + views + '</span>' : '')
-      + '</div>';
-
-    var card = '<a class="tg-post" href="' + link + '" target="_blank">'
-      + thumbHtml
-      + '<div class="tg-post-body">'
-      + metaHtml
-      + (shortText ? '<div class="tg-post-text">' + shortText + '</div>' : '')
-      + '<span class="tg-post-arrow">Читать в Telegram →</span>'
-      + '</div>'
-      + '</a>';
-
-    var div = document.createElement('div');
-    div.innerHTML = card;
-    feed.appendChild(div.firstChild);
-  });
-
-  if (!feed.children.length) showFallback(feed, channel);
-}
-
-function showFallback(feed, channel) {
-  feed.innerHTML = '<div class="tg-error"><p>Не удалось загрузить ленту</p>'
-    + '<a class="tg-btn" href="https://t.me/s/' + channel + '" target="_blank" style="display:inline-flex">'
-    + '<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" style="margin-right:6px"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg>'
-    + 'Открыть в Telegram</a></div>';
-}
-
-loadTgFeed();
-setInterval(loadTgFeed, 5 * 60 * 1000);
+// === STICKY CTA — появляется после скролла 40% страницы ===
+(function(){
+  var btn = document.getElementById('stickyCta');
+  var shown = false;
+  window.addEventListener('scroll', function(){
+    var scrolled = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+    if(!shown && scrolled > 0.4){
+      btn.classList.add('visible');
+      shown = true;
+    } else if(shown && scrolled < 0.1){
+      btn.classList.remove('visible');
+      shown = false;
+    }
+  }, {passive: true});
+})();
 </script>
 </body>
 </html>
