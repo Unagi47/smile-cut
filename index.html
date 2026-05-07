@@ -74,35 +74,45 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overf
 .vmeta{font-size:.73rem;color:var(--muted);}
 .vmeta span{color:var(--pink);font-weight:500;}
 
-/* === TG LIVE FEED === */
-.tg-s{background:var(--bg2);padding:5rem 3rem;}
-.tg-inner{display:grid;grid-template-columns:1fr 1.5fr;gap:4rem;align-items:start;}
-.tg-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(41,182,246,.1);border:1px solid rgba(41,182,246,.25);padding:4px 12px;border-radius:20px;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:#29b6f6;margin-bottom:1rem;}
-.tg-live-dot{width:6px;height:6px;border-radius:50%;background:#29b6f6;animation:pulse 2s infinite;}
-.tg-title{font-family:'Oswald',sans-serif;font-size:clamp(1.6rem,3vw,2.4rem);font-weight:700;color:var(--text);margin-bottom:.8rem;}
-.tg-sub{font-size:.95rem;color:var(--muted);line-height:1.7;margin-bottom:2rem;}
-.tg-btn{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,#1565c0,#29b6f6);color:#fff;padding:.8rem 1.8rem;border-radius:4px;font-size:.82rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;transition:opacity .2s,transform .2s;}
-.tg-btn:hover{opacity:.88;transform:translateY(-2px);}
-/* Feed */
-.tg-feed{display:flex;flex-direction:column;gap:10px;max-height:520px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(41,182,246,.3) transparent;}
-.tg-feed::-webkit-scrollbar{width:3px;}
-.tg-feed::-webkit-scrollbar-thumb{background:rgba(41,182,246,.3);border-radius:2px;}
-.tg-post{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:1rem 1.2rem;transition:border-color .2s,transform .2s;text-decoration:none;display:block;}
-.tg-post:hover{border-color:rgba(41,182,246,.5);transform:translateX(3px);}
-.tg-post-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem;}
-.tg-post-date{font-size:.7rem;color:var(--muted);display:flex;align-items:center;gap:6px;}
+/* === TG LIVE FEED — elegant horizontal cards === */
+.tg-s{background:var(--bg);padding:5rem 3rem;position:relative;overflow:hidden;}
+.tg-s::before{content:'';position:absolute;right:-200px;top:50%;transform:translateY(-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(41,182,246,.06) 0%,transparent 70%);border-radius:50%;pointer-events:none;}
+.tg-inner{display:grid;grid-template-columns:280px 1fr;gap:5rem;align-items:start;}
+.tg-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(41,182,246,.08);border:1px solid rgba(41,182,246,.2);padding:4px 12px;border-radius:20px;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:#29b6f6;margin-bottom:1.2rem;}
+.tg-live-dot{width:5px;height:5px;border-radius:50%;background:#29b6f6;animation:pulse 2s infinite;}
+.tg-title{font-family:'Oswald',sans-serif;font-size:clamp(1.5rem,2.5vw,2rem);font-weight:700;color:var(--text);margin-bottom:.7rem;line-height:1.1;}
+.tg-sub{font-size:.85rem;color:var(--muted);line-height:1.75;margin-bottom:2rem;}
+.tg-btn{display:inline-flex;align-items:center;gap:9px;background:transparent;color:#29b6f6;border:1px solid rgba(41,182,246,.35);padding:.65rem 1.4rem;border-radius:4px;font-size:.78rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;transition:all .2s;}
+.tg-btn:hover{background:rgba(41,182,246,.08);border-color:rgba(41,182,246,.6);transform:translateY(-1px);}
+.tg-btn svg{opacity:.8;}
+/* Feed — vertical list of horizontal cards */
+.tg-feed{display:flex;flex-direction:column;gap:0;}
+.tg-post{display:flex;align-items:flex-start;gap:1rem;padding:1.1rem 0;border-bottom:1px solid rgba(255,255,255,.05);text-decoration:none;transition:all .2s;position:relative;}
+.tg-post:first-child{padding-top:0;}
+.tg-post:last-child{border-bottom:none;}
+.tg-post:hover .tg-post-text{color:var(--text);}
+.tg-post:hover .tg-post-arrow{color:#29b6f6;opacity:1;}
+/* Thumbnail — small square */
+.tg-post-thumb{width:72px;height:72px;border-radius:4px;object-fit:cover;flex-shrink:0;background:var(--bg3);border:1px solid rgba(255,255,255,.06);}
+.tg-post-thumb-placeholder{width:72px;height:72px;border-radius:4px;background:var(--bg3);border:1px solid rgba(255,255,255,.06);flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.tg-post-thumb-placeholder svg{width:22px;height:22px;opacity:.2;}
+/* Content */
+.tg-post-body{flex:1;min-width:0;}
+.tg-post-meta{display:flex;align-items:center;gap:10px;margin-bottom:.4rem;}
 .tg-dot{width:4px;height:4px;border-radius:50%;background:#29b6f6;flex-shrink:0;}
-.tg-post-views{font-size:.7rem;color:var(--muted);}
-.tg-post-img{width:100%;border-radius:4px;margin-bottom:.6rem;aspect-ratio:16/9;object-fit:cover;display:block;}
-.tg-post-text{font-size:.85rem;color:var(--text);line-height:1.6;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;}
-.tg-post-arrow{font-size:.72rem;color:#29b6f6;margin-top:.4rem;display:block;}
-/* Loading state */
-.tg-loading{display:flex;flex-direction:column;gap:10px;}
-.tg-skeleton{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:1rem 1.2rem;}
-.tg-skeleton-line{height:10px;background:rgba(255,255,255,.06);border-radius:3px;margin-bottom:8px;animation:shimmer 1.5s infinite;}
-.tg-skeleton-line:last-child{width:60%;margin-bottom:0;}
-.tg-error{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:1.5rem;text-align:center;}
-.tg-error p{font-size:.85rem;color:var(--muted);margin-bottom:1rem;}
+.tg-post-date{font-size:.68rem;color:var(--muted);letter-spacing:.04em;}
+.tg-post-views{font-size:.68rem;color:var(--muted);}
+.tg-post-views::before{content:'·';margin-right:6px;}
+.tg-post-text{font-size:.84rem;color:rgba(240,234,248,.75);line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;transition:color .2s;}
+.tg-post-arrow{font-size:.7rem;color:rgba(41,182,246,.5);margin-top:.3rem;display:block;letter-spacing:.04em;transition:all .2s;opacity:0;}
+/* Skeleton */
+.tg-skeleton{display:flex;align-items:flex-start;gap:1rem;padding:1.1rem 0;border-bottom:1px solid rgba(255,255,255,.05);}
+.tg-sk-thumb{width:72px;height:72px;border-radius:4px;background:rgba(255,255,255,.04);flex-shrink:0;animation:shimmer 1.5s infinite;}
+.tg-sk-body{flex:1;display:flex;flex-direction:column;gap:8px;padding-top:4px;}
+.tg-sk-line{height:9px;background:rgba(255,255,255,.04);border-radius:3px;animation:shimmer 1.5s infinite;}
+/* Error */
+.tg-error{padding:2rem 0;text-align:center;}
+.tg-error p{font-size:.85rem;color:var(--muted);margin-bottom:1.2rem;}
 
 /* CTA */
 .cta-s{background:var(--bg);padding:5rem 3rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;position:relative;overflow:hidden;}
@@ -222,17 +232,17 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overf
         Live · Telegram
       </div>
       <h2 class="tg-title">Живая лента<br>из Telegram</h2>
-      <p class="tg-sub">Последние посты канала обновляются в реальном времени. Подписывайся чтобы получать их первым.</p>
+      <p class="tg-sub">Мысли, анонсы, находки — всё выходит в канале раньше чем на YouTube.</p>
       <a class="tg-btn" href="https://t.me/heartbeat_freeze" target="_blank">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg>
         Подписаться
       </a>
     </div>
     <div id="tgFeed" class="tg-feed">
-      <!-- скелетон пока грузится -->
-      <div class="tg-skeleton"><div class="tg-skeleton-line" style="width:40%"></div><div class="tg-skeleton-line"></div><div class="tg-skeleton-line"></div><div class="tg-skeleton-line"></div></div>
-      <div class="tg-skeleton"><div class="tg-skeleton-line" style="width:40%"></div><div class="tg-skeleton-line"></div><div class="tg-skeleton-line"></div></div>
-      <div class="tg-skeleton"><div class="tg-skeleton-line" style="width:40%"></div><div class="tg-skeleton-line"></div><div class="tg-skeleton-line"></div><div class="tg-skeleton-line"></div></div>
+      <div class="tg-skeleton"><div class="tg-sk-thumb"></div><div class="tg-sk-body"><div class="tg-sk-line" style="width:30%"></div><div class="tg-sk-line"></div><div class="tg-sk-line" style="width:80%"></div></div></div>
+      <div class="tg-skeleton"><div class="tg-sk-thumb"></div><div class="tg-sk-body"><div class="tg-sk-line" style="width:25%"></div><div class="tg-sk-line"></div><div class="tg-sk-line" style="width:70%"></div></div></div>
+      <div class="tg-skeleton"><div class="tg-sk-thumb"></div><div class="tg-sk-body"><div class="tg-sk-line" style="width:35%"></div><div class="tg-sk-line"></div><div class="tg-sk-line" style="width:60%"></div></div></div>
+      <div class="tg-skeleton"><div class="tg-sk-thumb"></div><div class="tg-sk-body"><div class="tg-sk-line" style="width:28%"></div><div class="tg-sk-line"></div><div class="tg-sk-line" style="width:75%"></div></div></div>
     </div>
   </div>
 </section>
@@ -309,68 +319,49 @@ document.getElementById('tl').addEventListener('click',function(){
 });
 
 // ============================================================
-// TELEGRAM LIVE FEED
-// Парсим t.me/s/heartbeat_freeze через CORS-прокси
-// Канал публичный — веб-версия доступна без API ключей
+// TELEGRAM LIVE FEED — horizontal card layout
 // ============================================================
 async function loadTgFeed() {
   var feed = document.getElementById('tgFeed');
   var channel = 'heartbeat_freeze';
-  
-  // Пробуем несколько CORS-прокси по очереди
+
   var proxies = [
     'https://api.allorigins.win/raw?url=',
-    'https://corsproxy.io/?',
-    'https://cors-anywhere.herokuapp.com/'
+    'https://corsproxy.io/?'
   ];
-  
+
   var html = null;
-  
   for (var i = 0; i < proxies.length; i++) {
     try {
       var url = proxies[i] + encodeURIComponent('https://t.me/s/' + channel);
       var res = await fetch(url, { signal: AbortSignal.timeout(8000) });
-      if (res.ok) {
-        html = await res.text();
-        break;
-      }
-    } catch(e) {
-      continue;
-    }
+      if (res.ok) { html = await res.text(); break; }
+    } catch(e) { continue; }
   }
-  
-  if (!html) {
-    showFallback(feed, channel);
-    return;
-  }
-  
-  // Парсим HTML через DOMParser
+
+  if (!html) { showFallback(feed, channel); return; }
+
   var parser = new DOMParser();
   var doc = parser.parseFromString(html, 'text/html');
-  
   var messages = doc.querySelectorAll('.tgme_widget_message_wrap');
-  
-  if (!messages.length) {
-    showFallback(feed, channel);
-    return;
-  }
-  
-  // Берём последние 5, в обратном порядке (новые сверху)
-  var items = Array.from(messages).slice(-5).reverse();
-  
+  if (!messages.length) { showFallback(feed, channel); return; }
+
+  var items = Array.from(messages).slice(-6).reverse();
   feed.innerHTML = '';
-  
+
+  var tgIcon = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg>';
+
   items.forEach(function(msg) {
-    var textEl = msg.querySelector('.tgme_widget_message_text');
-    var dateEl = msg.querySelector('.tgme_widget_message_date time');
+    var textEl  = msg.querySelector('.tgme_widget_message_text');
+    var dateEl  = msg.querySelector('.tgme_widget_message_date time');
     var viewsEl = msg.querySelector('.tgme_widget_message_views');
-    var linkEl = msg.querySelector('.tgme_widget_message_date a');
-    var imgEl = msg.querySelector('.tgme_widget_message_photo_wrap');
-    
-    var text = textEl ? textEl.innerText || textEl.textContent : '';
-    text = text.trim();
-    if (!text && !imgEl) return; // пропускаем пустые
-    
+    var linkEl  = msg.querySelector('.tgme_widget_message_date a');
+    var imgEl   = msg.querySelector('.tgme_widget_message_photo_wrap');
+    var videoEl = msg.querySelector('.tgme_widget_message_video_thumb');
+
+    var text = textEl ? (textEl.innerText || textEl.textContent).trim() : '';
+    if (!text && !imgEl && !videoEl) return;
+
     var date = '';
     if (dateEl) {
       var dt = dateEl.getAttribute('datetime') || '';
@@ -379,67 +370,56 @@ async function loadTgFeed() {
         date = d.toLocaleDateString('ru-RU', {day:'numeric', month:'long'});
       }
     }
-    
+
     var views = viewsEl ? viewsEl.textContent.trim() : '';
-    var link = linkEl ? linkEl.href : 'https://t.me/' + channel;
-    
-    // Достаём фото если есть
+    var link  = linkEl  ? linkEl.href : 'https://t.me/' + channel;
+
+    // Get thumbnail from photo or video
     var imgUrl = '';
-    if (imgEl) {
-      var style = imgEl.getAttribute('style') || '';
-      var match = style.match(/url\(['"]?([^'"]+)['"]?\)/);
-      if (match) imgUrl = match[1];
+    var sourceEl = imgEl || videoEl;
+    if (sourceEl) {
+      var style = sourceEl.getAttribute('style') || '';
+      var m = style.match(/url\(['"]?([^'"]+)['"]?\)/);
+      if (m) imgUrl = m[1];
     }
-    
-    var postHtml = '<a class="tg-post" href="' + link + '" target="_blank">';
-    postHtml += '<div class="tg-post-head">';
-    postHtml += '<div class="tg-post-date"><span class="tg-dot"></span>' + (date || 'недавно') + '</div>';
-    if (views) postHtml += '<div class="tg-post-views">👁 ' + views + '</div>';
-    postHtml += '</div>';
-    if (imgUrl) postHtml += '<img class="tg-post-img" src="' + imgUrl + '" alt="" loading="lazy">';
-    if (text) postHtml += '<div class="tg-post-text">' + text.substring(0, 300) + (text.length > 300 ? '…' : '') + '</div>';
-    postHtml += '<span class="tg-post-arrow">Читать в Telegram →</span>';
-    postHtml += '</a>';
-    
+
+    // Build card
+    var thumbHtml = imgUrl
+      ? '<img class="tg-post-thumb" src="' + imgUrl + '" alt="" loading="lazy">'
+      : '<div class="tg-post-thumb-placeholder">' + tgIcon + '</div>';
+
+    var shortText = text.substring(0, 120) + (text.length > 120 ? '…' : '');
+
+    var metaHtml = '<div class="tg-post-meta">'
+      + '<span class="tg-dot"></span>'
+      + '<span class="tg-post-date">' + (date || 'недавно') + '</span>'
+      + (views ? '<span class="tg-post-views">👁 ' + views + '</span>' : '')
+      + '</div>';
+
+    var card = '<a class="tg-post" href="' + link + '" target="_blank">'
+      + thumbHtml
+      + '<div class="tg-post-body">'
+      + metaHtml
+      + (shortText ? '<div class="tg-post-text">' + shortText + '</div>' : '')
+      + '<span class="tg-post-arrow">Читать в Telegram →</span>'
+      + '</div>'
+      + '</a>';
+
     var div = document.createElement('div');
-    div.innerHTML = postHtml;
+    div.innerHTML = card;
     feed.appendChild(div.firstChild);
   });
-  
-  if (!feed.children.length) {
-    showFallback(feed, channel);
-  }
+
+  if (!feed.children.length) showFallback(feed, channel);
 }
 
 function showFallback(feed, channel) {
-  // Если прокси не сработал — показываем официальный виджет Telegram
-  feed.innerHTML = '';
-  feed.style.maxHeight = 'none';
-  
-  var script = document.createElement('script');
-  script.setAttribute('async', '');
-  script.setAttribute('src', 'https://telegram.org/js/telegram-widget.js?22');
-  script.setAttribute('data-telegram-post', channel + '/1');
-  script.setAttribute('data-width', '100%');
-  script.setAttribute('data-userpic', 'false');
-  script.setAttribute('data-color', 'E040A0');
-  script.setAttribute('data-dark-color', 'E040A0');
-  script.setAttribute('data-dark', '1');
-  
-  // Официальный виджет последних N постов
-  var widgetScript = document.createElement('script');
-  widgetScript.setAttribute('async', '');
-  widgetScript.setAttribute('src', 'https://telegram.org/js/telegram-widget.js?22');
-  widgetScript.setAttribute('data-telegram-discussion', channel);
-  widgetScript.setAttribute('data-comments-limit', '5');
-  widgetScript.setAttribute('data-dark', '1');
-  widgetScript.setAttribute('data-color', 'E040A0');
-  
-  // Fallback: красивая карточка со ссылкой
-  feed.innerHTML = '<div class="tg-error"><p>Нажми ниже чтобы открыть живую ленту канала</p><a class="tg-btn" href="https://t.me/s/' + channel + '" target="_blank" style="display:inline-flex"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="margin-right:8px"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg>Открыть ленту канала</a></div>';
+  feed.innerHTML = '<div class="tg-error"><p>Не удалось загрузить ленту</p>'
+    + '<a class="tg-btn" href="https://t.me/s/' + channel + '" target="_blank" style="display:inline-flex">'
+    + '<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" style="margin-right:6px"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg>'
+    + 'Открыть в Telegram</a></div>';
 }
 
-// Запускаем и обновляем каждые 5 минут
 loadTgFeed();
 setInterval(loadTgFeed, 5 * 60 * 1000);
 </script>
