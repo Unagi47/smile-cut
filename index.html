@@ -578,6 +578,508 @@ body{
   .toast{font-size:.74rem;padding:.6rem 1rem;}
   .nav-logo{font-size:1.1rem;}
 }
+
+/* ============================================================
+   ФИЧА 1: МИНИ-ИГРА "Угадай игру"
+   ============================================================ */
+.game-s{
+  background:var(--bg);
+  padding:5rem 3rem;
+  position:relative;
+  overflow:hidden;
+  transition:background-color .4s ease;
+}
+.game-s::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 50% 50% at 80% 20%,rgba(123,47,255,.08) 0%,transparent 60%);
+  pointer-events:none;
+}
+.game-wrap{max-width:780px;margin:0 auto;position:relative;z-index:1;}
+.game-head{display:flex;align-items:center;gap:14px;margin-bottom:.6rem;}
+.game-head svg{width:28px;height:28px;fill:var(--pink);flex-shrink:0;}
+.game-title{font-family:'Oswald',sans-serif;font-size:clamp(1.6rem,3vw,2.4rem);font-weight:700;color:var(--text);letter-spacing:.02em;line-height:1;}
+.game-subtitle{font-size:.9rem;color:var(--muted);margin-bottom:2rem;}
+.game-score{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(224,64,160,.1);
+  border:1px solid var(--border);
+  padding:5px 14px;border-radius:20px;
+  font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--pink);
+  margin-bottom:1.5rem;
+}
+.game-score strong{color:var(--text);font-weight:700;}
+
+.game-board{
+  background:var(--bg3);
+  border:1px solid var(--border);
+  border-radius:12px;
+  overflow:hidden;
+  transition:border-color .3s ease, background-color .4s ease, box-shadow .3s ease;
+  position:relative;
+}
+.game-board.correct{border-color:#2ecc71;box-shadow:0 0 40px rgba(46,204,113,.3);}
+.game-board.wrong{border-color:#e74c3c;}
+
+.game-flash{
+  position:absolute;inset:0;
+  background:rgba(46,204,113,0);
+  pointer-events:none;
+  transition:background-color .25s ease;
+  z-index:5;
+}
+.game-board.correct .game-flash{background:rgba(46,204,113,.25);}
+
+.game-img-wrap{
+  aspect-ratio:16/9;
+  position:relative;
+  overflow:hidden;
+  background:var(--bg2);
+}
+.game-img{
+  width:100%;height:100%;
+  object-fit:cover;
+  display:block;
+  filter:blur(20px);
+  transition:filter .3s linear;
+  transform:scale(1.05); /* убираем артефакты по краям при blur */
+}
+.game-board.revealed .game-img{filter:blur(0);}
+
+.game-progress{
+  height:4px;
+  background:var(--bg2);
+  position:relative;
+  overflow:hidden;
+}
+.game-progress-fill{
+  position:absolute;left:0;top:0;height:100%;
+  width:100%;
+  background:linear-gradient(90deg,var(--pink),var(--purple));
+  transform-origin:left;
+  transition:none;
+}
+.game-progress-fill.warn{background:linear-gradient(90deg,#ff9800,#e74c3c);}
+
+.game-controls{padding:1.2rem 1.4rem;display:flex;flex-direction:column;gap:1rem;}
+.game-input-row{display:flex;gap:8px;}
+.game-input{
+  flex:1;
+  background:var(--bg);
+  border:1px solid var(--border);
+  border-radius:6px;
+  padding:.7rem 1rem;
+  font-family:'Inter',sans-serif;
+  font-size:.92rem;
+  color:var(--text);
+  outline:none;
+  transition:border-color .3s ease, transform .15s ease, background-color .4s ease;
+}
+.game-input:focus{border-color:var(--pink);}
+.game-input.shake{animation:gameShake .4s ease;border-color:#e74c3c;}
+@keyframes gameShake{
+  0%,100%{transform:translateX(0);}
+  20%{transform:translateX(-8px);}
+  40%{transform:translateX(8px);}
+  60%{transform:translateX(-5px);}
+  80%{transform:translateX(5px);}
+}
+.game-input:disabled{opacity:.6;cursor:not-allowed;}
+
+.game-btn{
+  background:linear-gradient(135deg,var(--pink),var(--purple));
+  color:#fff;border:none;
+  padding:.7rem 1.4rem;
+  border-radius:6px;
+  font-family:'Inter',sans-serif;
+  font-size:.82rem;font-weight:600;
+  letter-spacing:.06em;text-transform:uppercase;
+  cursor:pointer;
+  transition:opacity .25s, transform .25s;
+  flex-shrink:0;
+}
+.game-btn:hover:not(:disabled){opacity:.9;transform:translateY(-1px);}
+.game-btn:disabled{opacity:.5;cursor:not-allowed;}
+.game-btn.ghost{
+  background:transparent;
+  color:var(--text);
+  border:1px solid var(--border);
+}
+.game-btn.ghost:hover:not(:disabled){border-color:var(--pink);color:var(--pink);}
+.game-btn.success{background:linear-gradient(135deg,#2ecc71,#27ae60);}
+
+.game-hint{font-size:.82rem;color:var(--muted);}
+.game-hint b{color:var(--text);font-weight:500;}
+.game-answer-reveal{
+  font-size:.95rem;
+  color:var(--text);
+  padding:.6rem .9rem;
+  background:rgba(224,64,160,.1);
+  border-left:3px solid var(--pink);
+  border-radius:4px;
+  display:none;
+}
+.game-answer-reveal.visible{display:block;}
+.game-answer-reveal b{color:var(--pink);}
+
+.game-actions{display:flex;gap:8px;flex-wrap:wrap;}
+.game-actions .game-btn{flex:1;min-width:140px;}
+
+/* Конфетти */
+.confetti-layer{
+  position:absolute;inset:0;
+  pointer-events:none;
+  overflow:hidden;
+  z-index:6;
+}
+.confetti-piece{
+  position:absolute;
+  top:-10%;
+  width:8px;height:14px;
+  border-radius:2px;
+  opacity:0;
+  animation:confettiFall 1.8s cubic-bezier(.3,.7,.4,1) forwards;
+}
+@keyframes confettiFall{
+  0%{
+    opacity:1;
+    transform:translateY(0) rotate(0deg);
+  }
+  100%{
+    opacity:0;
+    transform:translateY(110vh) rotate(720deg);
+  }
+}
+
+/* ============================================================
+   ФИЧА 2: МОДАЛЬНОЕ ОКНО "Удиви меня"
+   ============================================================ */
+.surprise-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-size:.78rem;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  color:var(--muted);
+  text-decoration:none;
+  padding:6px 14px;
+  border-radius:20px;
+  border:1px solid transparent;
+  background:transparent;
+  cursor:pointer;
+  font-family:'Inter',sans-serif;
+  transition:all .3s ease;
+}
+.surprise-btn:hover{
+  color:var(--pink);
+  border-color:var(--border);
+  background:rgba(224,64,160,.06);
+}
+.surprise-btn .dice{
+  display:inline-block;
+  transition:transform .5s cubic-bezier(.34,1.56,.64,1);
+}
+.surprise-btn:hover .dice{transform:rotate(360deg);}
+
+.modal-overlay{
+  position:fixed;inset:0;
+  background:rgba(0,0,0,.78);
+  backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(6px);
+  z-index:500;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:1.5rem;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .3s ease;
+}
+.modal-overlay.visible{opacity:1;pointer-events:auto;}
+
+.modal-card{
+  background:var(--bg3);
+  border:1px solid var(--border);
+  border-radius:12px;
+  max-width:520px;
+  width:100%;
+  overflow:hidden;
+  position:relative;
+  transform:scale(.9);
+  opacity:0;
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1), opacity .25s ease;
+  box-shadow:0 24px 80px rgba(0,0,0,.6), 0 0 60px rgba(224,64,160,.15);
+}
+.modal-overlay.visible .modal-card{
+  transform:scale(1);
+  opacity:1;
+}
+
+.modal-close{
+  position:absolute;top:10px;right:10px;
+  z-index:3;
+  width:34px;height:34px;
+  border-radius:50%;
+  background:rgba(13,13,18,.7);
+  border:1px solid rgba(255,255,255,.15);
+  color:#fff;
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;line-height:1;
+  transition:background-color .25s, transform .25s, border-color .25s;
+  padding:0;
+  backdrop-filter:blur(6px);
+}
+.modal-close:hover{background:linear-gradient(135deg,var(--pink),var(--purple));border-color:transparent;transform:rotate(90deg);}
+
+.modal-thumb{
+  aspect-ratio:16/9;
+  background:var(--bg2);
+  position:relative;
+  overflow:hidden;
+}
+.modal-thumb img{
+  width:100%;height:100%;
+  object-fit:cover;
+  display:block;
+}
+.modal-dur-badge{
+  position:absolute;
+  bottom:10px;right:10px;
+  background:rgba(0,0,0,.85);
+  color:#fff;
+  font-size:12px;
+  padding:3px 8px;
+  border-radius:4px;
+}
+.modal-eyebrow{
+  position:absolute;
+  top:10px;left:10px;
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(224,64,160,.18);
+  border:1px solid rgba(224,64,160,.4);
+  padding:3px 10px;
+  border-radius:20px;
+  font-size:10px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--pink);
+  font-weight:600;
+  backdrop-filter:blur(6px);
+}
+
+.modal-body{padding:1.4rem 1.6rem 1.6rem;}
+.modal-title{
+  font-family:'Oswald',sans-serif;
+  font-size:1.3rem;
+  font-weight:700;
+  color:var(--text);
+  line-height:1.25;
+  margin-bottom:1.2rem;
+}
+.modal-actions{display:flex;gap:10px;flex-wrap:wrap;}
+.modal-actions a, .modal-actions button{flex:1;min-width:130px;}
+
+/* ============================================================
+   ФИЧА 3: ХОТКЕЙ-ТОСТ + контактная форма
+   ============================================================ */
+.hotkey-toast{
+  position:fixed;
+  bottom:6rem; /* выше обычного toast */
+  left:50%;
+  transform:translateX(-50%) translateY(40px);
+  background:var(--toast-bg);
+  border:1px solid var(--border);
+  color:var(--text);
+  padding:.85rem 1.5rem;
+  border-radius:30px;
+  font-size:.78rem;
+  letter-spacing:.02em;
+  z-index:399;
+  display:flex;align-items:center;gap:14px;
+  box-shadow:0 8px 32px rgba(0,0,0,.4);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  opacity:0;
+  pointer-events:none;
+  transition:transform .4s cubic-bezier(.34,1.56,.64,1), opacity .3s ease;
+  max-width:calc(100% - 2rem);
+}
+.hotkey-toast.visible{
+  transform:translateX(-50%) translateY(0);
+  opacity:1;
+  pointer-events:auto;
+}
+.hotkey-toast kbd{
+  display:inline-block;
+  padding:1px 7px;
+  background:var(--bg);
+  border:1px solid var(--border);
+  border-radius:4px;
+  font-family:'Inter',sans-serif;
+  font-size:.7rem;
+  font-weight:600;
+  color:var(--pink);
+  margin:0 2px;
+}
+.hotkey-toast-close{
+  background:transparent;
+  border:none;
+  color:var(--muted);
+  cursor:pointer;
+  font-size:18px;
+  line-height:1;
+  padding:0 0 0 4px;
+  transition:color .2s;
+}
+.hotkey-toast-close:hover{color:var(--pink);}
+
+.toast a.toast-link{
+  color:var(--pink);
+  text-decoration:underline;
+  margin-left:6px;
+  font-weight:600;
+}
+
+/* ===== Контактная форма ===== */
+.contact-s{
+  background:var(--bg2);
+  padding:5rem 3rem;
+  transition:background-color .4s ease;
+}
+.contact-wrap{max-width:620px;margin:0 auto;}
+.contact-form{
+  background:var(--bg3);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:1.8rem;
+  display:flex;flex-direction:column;gap:1rem;
+  transition:background-color .4s ease, border-color .4s ease;
+}
+.contact-field{display:flex;flex-direction:column;gap:6px;}
+.contact-label{
+  font-size:.72rem;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--muted);
+  font-weight:500;
+}
+.contact-label .req{color:var(--pink);}
+.contact-input,
+.contact-textarea{
+  background:var(--bg);
+  border:1px solid var(--border);
+  border-radius:6px;
+  padding:.7rem 1rem;
+  font-family:'Inter',sans-serif;
+  font-size:.92rem;
+  color:var(--text);
+  outline:none;
+  transition:border-color .3s ease, background-color .4s ease;
+  resize:none;
+}
+.contact-textarea{min-height:110px;resize:vertical;font-family:'Inter',sans-serif;}
+.contact-input:focus,
+.contact-textarea:focus{border-color:var(--pink);}
+.contact-input:disabled,
+.contact-textarea:disabled{opacity:.6;}
+.contact-counter{font-size:.7rem;color:var(--muted);text-align:right;margin-top:-2px;}
+.contact-counter.warn{color:#ff9800;}
+.contact-counter.over{color:#e74c3c;}
+
+.contact-submit{
+  align-self:flex-start;
+  background:linear-gradient(135deg,var(--pink),var(--purple));
+  color:#fff;border:none;
+  padding:.8rem 1.8rem;
+  border-radius:6px;
+  font-family:'Inter',sans-serif;
+  font-size:.82rem;font-weight:600;
+  letter-spacing:.08em;text-transform:uppercase;
+  cursor:pointer;
+  display:inline-flex;align-items:center;gap:10px;
+  transition:opacity .25s, transform .25s;
+  min-width:180px;justify-content:center;
+}
+.contact-submit:hover:not(:disabled){opacity:.9;transform:translateY(-1px);}
+.contact-submit:disabled{opacity:.6;cursor:not-allowed;}
+
+.contact-spinner{
+  width:14px;height:14px;
+  border:2px solid rgba(255,255,255,.3);
+  border-top-color:#fff;
+  border-radius:50%;
+  animation:contactSpin .7s linear infinite;
+  display:none;
+}
+.contact-submit.loading .contact-spinner{display:block;}
+.contact-submit.loading .contact-submit-label{opacity:.8;}
+@keyframes contactSpin{to{transform:rotate(360deg);}}
+
+.contact-status{
+  font-size:.85rem;
+  padding:.7rem 1rem;
+  border-radius:6px;
+  display:none;
+}
+.contact-status.success{
+  display:block;
+  background:rgba(46,204,113,.1);
+  border:1px solid rgba(46,204,113,.4);
+  color:#2ecc71;
+}
+.contact-status.error{
+  display:block;
+  background:rgba(231,76,60,.1);
+  border:1px solid rgba(231,76,60,.4);
+  color:#e74c3c;
+}
+
+/* ============================================================
+   REDUCED MOTION для новых элементов
+   ============================================================ */
+@media (prefers-reduced-motion: reduce){
+  .game-input.shake{animation:none;}
+  .confetti-piece{animation:none;display:none;}
+  .surprise-btn:hover .dice{transform:none;}
+  .modal-card{transition:opacity .15s ease;transform:none !important;}
+  .game-img{transition:none;}
+}
+
+/* ============================================================
+   MOBILE 768
+   ============================================================ */
+@media(max-width:768px){
+  .game-s{padding:3rem 1.2rem;}
+  .game-controls{padding:1rem 1.1rem;}
+  .game-input-row{flex-direction:column;}
+  .game-input-row .game-btn{width:100%;}
+  .game-actions .game-btn{flex:1 1 100%;}
+  .modal-overlay{padding:1rem;}
+  .modal-card{max-width:90vw;}
+  .modal-body{padding:1.1rem 1.2rem 1.3rem;}
+  .modal-title{font-size:1.1rem;}
+  .modal-actions a, .modal-actions button{flex:1 1 100%;}
+  .surprise-btn{font-size:.68rem;padding:5px 10px;}
+
+  .contact-s{padding:3rem 1.2rem;}
+  .contact-form{padding:1.3rem;}
+  .contact-submit{width:100%;justify-content:center;}
+
+  .hotkey-toast{
+    bottom:5rem;font-size:.72rem;padding:.7rem 1.1rem;gap:10px;
+  }
+  .hotkey-toast kbd{font-size:.65rem;padding:1px 5px;}
+}
+@media(max-width:480px){
+  .game-head svg{width:22px;height:22px;}
+  .game-controls{padding:.9rem 1rem;}
+  .game-actions{flex-direction:column;}
+  .game-input,.game-btn,.contact-input,.contact-textarea,.contact-submit{font-size:.85rem;}
+  .modal-title{font-size:1rem;}
+  .modal-close{width:30px;height:30px;font-size:16px;}
+}
 </style>
 <!-- Schema.org -->
 <script type="application/ld+json">
@@ -620,6 +1122,7 @@ body{
       <a href="index.html" class="active">Главная</a>
       <a href="#top">Популярные</a>
       <a href="#tg">Telegram</a>
+      <button type="button" class="surprise-btn" id="surpriseBtn" aria-label="Случайное видео"><span class="dice" aria-hidden="true">🎲</span> Удиви меня</button>
       <a href="videos.html">Все видео</a>
     </div>
     <button class="theme-toggle" id="themeToggle" type="button" aria-label="Переключить тему" title="Переключить тему">
@@ -653,6 +1156,31 @@ body{
 <div class="toast" id="toast" role="status" aria-live="polite">
   <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
   <span id="toastText">Ссылка скопирована</span>
+</div>
+
+<!-- Hotkey toast (подсказка о горячих клавишах) -->
+<div class="hotkey-toast" id="hotkeyToast" role="status" aria-live="polite">
+  <span>⌨️ Горячие клавиши: <kbd>/</kbd> поиск · <kbd>T</kbd> тема · <kbd>R</kbd> случайное видео</span>
+  <button type="button" class="hotkey-toast-close" id="hotkeyToastClose" aria-label="Закрыть">×</button>
+</div>
+
+<!-- Модалка "Удиви меня" -->
+<div class="modal-overlay" id="surpriseModal" role="dialog" aria-modal="true" aria-labelledby="surpriseTitle" aria-hidden="true">
+  <div class="modal-card">
+    <button type="button" class="modal-close" id="surpriseClose" aria-label="Закрыть">×</button>
+    <div class="modal-thumb">
+      <span class="modal-eyebrow">🎲 Случайное</span>
+      <img id="surpriseThumb" src="" alt="">
+      <span class="modal-dur-badge" id="surpriseDur">—</span>
+    </div>
+    <div class="modal-body">
+      <div class="modal-title" id="surpriseTitle">—</div>
+      <div class="modal-actions">
+        <a class="game-btn success" id="surpriseWatch" href="#" target="_blank" rel="noopener" style="text-align:center;text-decoration:none;">▶ Смотреть</a>
+        <button type="button" class="game-btn ghost" id="surpriseAgain">🎲 Ещё раз</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <section class="hero">
@@ -772,6 +1300,48 @@ body{
   </div>
 </section>
 
+<!-- ФИЧА 1: МИНИ-ИГРА "Угадай игру" -->
+<section class="game-s reveal" id="game">
+  <div class="game-wrap">
+    <div class="game-head">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4-3c-.83 0-1.5-.67-1.5-1.5S18.67 9 19.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+      <h2 class="game-title">Угадай игру из видео</h2>
+    </div>
+    <p class="game-subtitle">Скриншот размывается всё меньше с каждой секундой. Успей угадать!</p>
+    <div class="game-score">Угадано: <strong id="gameScore">0</strong> из <strong id="gameTotal">0</strong></div>
+
+    <div class="game-board" id="gameBoard">
+      <div class="game-img-wrap">
+        <img class="game-img" id="gameImg" src="" alt="Угадай игру">
+        <div class="confetti-layer" id="confettiLayer" aria-hidden="true"></div>
+        <div class="game-flash" aria-hidden="true"></div>
+      </div>
+      <div class="game-progress" aria-hidden="true">
+        <div class="game-progress-fill" id="gameProgress"></div>
+      </div>
+      <div class="game-controls">
+        <div class="game-hint">Подсказка: <b id="gameHint">—</b></div>
+        <div class="game-input-row">
+          <input
+            type="text"
+            class="game-input"
+            id="gameInput"
+            placeholder="Введи название игры…"
+            autocomplete="off"
+            spellcheck="false"
+            aria-label="Название игры">
+          <button type="button" class="game-btn" id="gameCheck">Проверить</button>
+        </div>
+        <div class="game-answer-reveal" id="gameReveal" role="status" aria-live="polite"></div>
+        <div class="game-actions">
+          <a class="game-btn success" id="gameWatchBtn" href="#" target="_blank" rel="noopener" style="display:none;text-align:center;text-decoration:none;">▶ Смотреть видео</a>
+          <button type="button" class="game-btn ghost" id="gameNext">Следующая →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- TG LIVE FEED -->
 <section class="tg-s reveal" id="tg">
   <div class="tg-head">
@@ -852,12 +1422,42 @@ body{
   </div>
 </section>
 
+<!-- Контактная форма -->
+<section class="contact-s reveal" id="contact">
+  <div class="contact-wrap">
+    <div class="eyebrow">Связь</div>
+    <h2 class="sec-title">Написать автору</h2>
+    <form class="contact-form" id="contactForm" novalidate>
+      <div class="contact-field">
+        <label class="contact-label" for="cName">Имя <span class="req">*</span></label>
+        <input class="contact-input" id="cName" name="name" type="text" maxlength="500" required autocomplete="name">
+      </div>
+      <div class="contact-field">
+        <label class="contact-label" for="cContact">Контакт (TG / email) <span style="opacity:.5;">— по желанию</span></label>
+        <input class="contact-input" id="cContact" name="contact" type="text" maxlength="500" autocomplete="off">
+      </div>
+      <div class="contact-field">
+        <label class="contact-label" for="cMessage">Сообщение <span class="req">*</span></label>
+        <textarea class="contact-textarea" id="cMessage" name="message" maxlength="500" required></textarea>
+        <div class="contact-counter" id="cCounter">0 / 500</div>
+      </div>
+      <div class="contact-status" id="cStatus" role="status" aria-live="polite"></div>
+      <button type="submit" class="contact-submit" id="cSubmit">
+        <span class="contact-spinner" aria-hidden="true"></span>
+        <span class="contact-submit-label">Отправить</span>
+      </button>
+    </form>
+  </div>
+</section>
+
 <footer class="footer">
   <div class="flogo">Smile Cut</div>
   <nav class="fnav">
     <a href="#videos">Видео</a>
+    <a href="#game">Игра</a>
     <a href="#tg">Telegram</a>
     <a href="#top">Популярные</a>
+    <a href="#contact">Связь</a>
     <a href="videos.html">Все видео</a>
     <a href="https://www.youtube.com/@unagi47" target="_blank">YouTube</a>
     <a href="https://vk.com/smile_cut" target="_blank">ВКонтакте</a>
@@ -1208,6 +1808,34 @@ document.getElementById('tl').addEventListener('click',function(){
   }
 
   async function fetchFresh(){
+    // Сначала пробуем наш собственный API (если задеплоен на Vercel)
+    try {
+      var apiController = new AbortController();
+      var apiTimer = setTimeout(function(){ apiController.abort(); }, 5000);
+      var apiRes = await fetch('/api/tg-feed', { signal: apiController.signal });
+      clearTimeout(apiTimer);
+      if (apiRes.ok){
+        var apiData = await apiRes.json();
+        if (apiData && Array.isArray(apiData.posts) && apiData.posts.length){
+          // Маппим в формат, который ожидает renderPosts
+          return apiData.posts.map(function(p){
+            var dateStr = 'недавно';
+            if (p.date){
+              try { dateStr = new Date(p.date).toLocaleDateString('ru-RU', {day:'numeric', month:'long'}); } catch(e){}
+            }
+            return {
+              text:  p.text || '',
+              date:  dateStr,
+              views: p.views || '',
+              link:  p.link || ('https://t.me/' + CHANNEL),
+              img:   p.imgUrl || ''
+            };
+          });
+        }
+      }
+    } catch(e){ /* идём в fallback */ }
+
+    // Fallback — старый прокси для GitHub Pages (без бэкенда)
     try {
       var controller = new AbortController();
       var timer = setTimeout(function(){ controller.abort(); }, TIMEOUT);
@@ -1245,6 +1873,592 @@ document.getElementById('tl').addEventListener('click',function(){
     if (!shown && scrolled > 0.4){ btn.classList.add('visible'); shown = true; }
     else if (shown && scrolled < 0.1){ btn.classList.remove('visible'); shown = false; }
   }, { passive: true });
+})();
+
+// ============================================================
+// YOUTUBE STATS — обновляем data-target из API, потом анимируем
+// ============================================================
+(function(){
+  // Форматирование числа в "1.2K" / "594K" / "1.2M"
+  function formatCount(n){
+    n = Number(n) || 0;
+    if (n >= 1000000){
+      var m = n / 1000000;
+      return (m >= 10 ? Math.round(m) : m.toFixed(1).replace('.0','')) + 'M';
+    }
+    if (n >= 1000){
+      var k = n / 1000;
+      return (k >= 10 ? Math.round(k) : k.toFixed(1).replace('.0','')) + 'K';
+    }
+    return String(n);
+  }
+
+  // Находим элементы счётчиков
+  var stats = document.querySelectorAll('.stat-val[data-target]');
+  if (!stats.length) return;
+
+  // По текущей вёрстке порядок: подписчики, видео, просмотры
+  var labels = ['подписчиков', 'видео', 'просмотров'];
+  var elByLabel = {};
+  stats.forEach(function(el){
+    var lab = el.parentElement && el.parentElement.querySelector('.stat-lab');
+    if (lab) elByLabel[lab.textContent.trim().toLowerCase()] = el;
+  });
+
+  // Запрос к API в фоне
+  fetch('/api/youtube-stats')
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .then(function(data){
+      if (!data || data.error) return;
+
+      var mapping = [
+        ['подписчиков', data.subscribers],
+        ['видео',       data.videoCount],
+        ['просмотров',  data.totalViews]
+      ];
+
+      mapping.forEach(function(pair){
+        var el = elByLabel[pair[0]];
+        if (!el || pair[1] == null) return;
+        var newTarget = formatCount(pair[1]);
+        var oldTarget = el.getAttribute('data-target');
+        if (newTarget === oldTarget) return;
+
+        // Если счётчик уже отработал и стоит финальное значение —
+        // просто обновляем текст без повторной анимации
+        if (el.textContent.trim() === oldTarget){
+          el.setAttribute('data-target', newTarget);
+          el.textContent = newTarget;
+        } else {
+          // Анимация ещё не доехала — обновляем target, она подхватит
+          el.setAttribute('data-target', newTarget);
+        }
+      });
+    })
+    .catch(function(){ /* тихо игнорируем — остаются хардкод-цифры */ });
+})();
+
+// ============================================================
+// ФИЧА 1: МИНИ-ИГРА "Угадай игру"
+// ============================================================
+(function(){
+  var GAMES = [
+    { img: "https://img.youtube.com/vi/W8FBm_gmL_8/maxresdefault.jpg", answer: "Steam Deck",     hint: "Портативная консоль от Valve",  url: "https://youtube.com/watch?v=W8FBm_gmL_8" },
+    { img: "https://img.youtube.com/vi/ecYRoZDKs7U/maxresdefault.jpg", answer: "Nintendo Switch", hint: "Гибридная консоль от Nintendo", url: "https://youtube.com/watch?v=ecYRoZDKs7U" },
+    { img: "https://img.youtube.com/vi/dC24KgDiNe8/maxresdefault.jpg", answer: "Atomic Heart",    hint: "Советский шутер с роботами",    url: "https://youtube.com/watch?v=dC24KgDiNe8" },
+    { img: "https://img.youtube.com/vi/aj7dVKmqCnc/maxresdefault.jpg", answer: "Elden Ring",      hint: "Souls-like от FromSoftware",    url: "https://youtube.com/watch?v=aj7dVKmqCnc" },
+    { img: "https://img.youtube.com/vi/PlA5jEhxKjg/maxresdefault.jpg", answer: "Silent Hill",     hint: "Легендарный хоррор",            url: "https://youtube.com/watch?v=PlA5jEhxKjg" }
+  ];
+
+  var ROUND_TIME = 15000; // 15 сек
+  var BLUR_MAX = 20;
+  var PENALTY = 3000; // -3 сек за ошибку
+
+  var board     = document.getElementById('gameBoard');
+  if (!board) return;
+  var imgEl     = document.getElementById('gameImg');
+  var hintEl    = document.getElementById('gameHint');
+  var inputEl   = document.getElementById('gameInput');
+  var checkBtn  = document.getElementById('gameCheck');
+  var nextBtn   = document.getElementById('gameNext');
+  var watchBtn  = document.getElementById('gameWatchBtn');
+  var revealEl  = document.getElementById('gameReveal');
+  var progress  = document.getElementById('gameProgress');
+  var scoreEl   = document.getElementById('gameScore');
+  var totalEl   = document.getElementById('gameTotal');
+  var confettiL = document.getElementById('confettiLayer');
+
+  var prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var state = {
+    current: null,
+    recent: [],          // последние 3 индекса — не повторяем
+    score: 0,
+    total: 0,
+    startTime: 0,
+    deadline: 0,
+    rafId: null,
+    finished: false
+  };
+
+  function pickRandom(){
+    if (GAMES.length <= 3){
+      // если игр меньше — просто не повторяем последний
+      var pool = GAMES.map(function(_, i){ return i; }).filter(function(i){ return state.recent[state.recent.length-1] !== i; });
+      var pickedIdx = pool[Math.floor(Math.random() * pool.length)];
+      return pickedIdx;
+    }
+    var available = GAMES.map(function(_, i){ return i; }).filter(function(i){ return state.recent.indexOf(i) === -1; });
+    if (!available.length) available = GAMES.map(function(_, i){ return i; });
+    return available[Math.floor(Math.random() * available.length)];
+  }
+
+  function setProgress(pct){
+    progress.style.width = pct + '%';
+    if (pct < 30) progress.classList.add('warn');
+    else progress.classList.remove('warn');
+    var blur = (pct / 100) * BLUR_MAX;
+    if (!prefersReduced){
+      imgEl.style.filter = 'blur(' + blur + 'px)';
+    }
+  }
+
+  function tick(){
+    if (state.finished) return;
+    var now = performance.now();
+    var remaining = state.deadline - now;
+    if (remaining <= 0){
+      setProgress(0);
+      timeUp();
+      return;
+    }
+    var pct = (remaining / ROUND_TIME) * 100;
+    setProgress(pct);
+    state.rafId = requestAnimationFrame(tick);
+  }
+
+  function timeUp(){
+    state.finished = true;
+    cancelAnimationFrame(state.rafId);
+    board.classList.add('revealed');
+    imgEl.style.filter = 'blur(0)';
+    inputEl.disabled = true;
+    checkBtn.disabled = true;
+    revealEl.innerHTML = 'Время вышло! Это <b>' + escapeHtml(state.current.answer) + '</b>';
+    revealEl.classList.add('visible');
+    watchBtn.style.display = 'inline-flex';
+    watchBtn.href = state.current.url;
+    state.total++;
+    updateScore();
+  }
+
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, function(c){
+      return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c];
+    });
+  }
+
+  function updateScore(){
+    scoreEl.textContent = state.score;
+    totalEl.textContent = state.total;
+  }
+
+  function makeConfetti(){
+    if (prefersReduced || !confettiL) return;
+    confettiL.innerHTML = '';
+    var colors = ['#e040a0', '#7b2fff', '#ff6b9d', '#a86fff', '#ffd700', '#2ecc71'];
+    for (var i = 0; i < 20; i++){
+      var p = document.createElement('span');
+      p.className = 'confetti-piece';
+      p.style.left = Math.random() * 100 + '%';
+      p.style.background = colors[Math.floor(Math.random() * colors.length)];
+      p.style.animationDelay = (Math.random() * 0.3) + 's';
+      p.style.animationDuration = (1.4 + Math.random() * 0.8) + 's';
+      p.style.transform = 'rotate(' + (Math.random() * 360) + 'deg)';
+      confettiL.appendChild(p);
+    }
+    setTimeout(function(){
+      if (confettiL) confettiL.innerHTML = '';
+    }, 2500);
+  }
+
+  function checkAnswer(){
+    if (state.finished) return;
+    var val = (inputEl.value || '').trim().toLowerCase();
+    if (!val) return;
+
+    var correct = state.current.answer.toLowerCase();
+    // Частичное совпадение в обе стороны: "elden" найдёт "Elden Ring"
+    var isCorrect = val.indexOf(correct) !== -1 || correct.indexOf(val) !== -1;
+
+    if (isCorrect){
+      state.finished = true;
+      cancelAnimationFrame(state.rafId);
+      board.classList.add('correct', 'revealed');
+      imgEl.style.filter = 'blur(0)';
+      inputEl.disabled = true;
+      checkBtn.disabled = true;
+      revealEl.innerHTML = '✓ Правильно — это <b>' + escapeHtml(state.current.answer) + '</b>';
+      revealEl.classList.add('visible');
+      watchBtn.style.display = 'inline-flex';
+      watchBtn.href = state.current.url;
+      state.score++;
+      state.total++;
+      updateScore();
+      makeConfetti();
+      // снимаем зелёный glow через секунду
+      setTimeout(function(){ board.classList.remove('correct'); }, 1500);
+    } else {
+      // Wrong — shake + штраф
+      inputEl.classList.remove('shake');
+      void inputEl.offsetWidth; // restart animation
+      inputEl.classList.add('shake');
+      board.classList.add('wrong');
+      setTimeout(function(){ board.classList.remove('wrong'); }, 400);
+      state.deadline -= PENALTY;
+      // подсветим input на 400мс
+      setTimeout(function(){ inputEl.classList.remove('shake'); }, 450);
+    }
+  }
+
+  function startRound(){
+    var idx = pickRandom();
+    state.recent.push(idx);
+    if (state.recent.length > 3) state.recent.shift();
+    state.current = GAMES[idx];
+    state.finished = false;
+
+    // Сброс UI
+    board.classList.remove('correct', 'wrong', 'revealed');
+    revealEl.classList.remove('visible');
+    revealEl.innerHTML = '';
+    watchBtn.style.display = 'none';
+    inputEl.disabled = false;
+    checkBtn.disabled = false;
+    inputEl.value = '';
+    if (confettiL) confettiL.innerHTML = '';
+
+    imgEl.src = state.current.img;
+    hintEl.textContent = state.current.hint;
+    setProgress(100);
+
+    if (prefersReduced){
+      // без таймера — даём играть в своём темпе, blur сразу убираем
+      imgEl.style.filter = 'blur(0)';
+      progress.style.width = '100%';
+      return;
+    }
+
+    state.startTime = performance.now();
+    state.deadline = state.startTime + ROUND_TIME;
+    cancelAnimationFrame(state.rafId);
+    state.rafId = requestAnimationFrame(tick);
+    // фокус на инпут (но не на мобиле, чтобы не выскакивала клава)
+    if (window.innerWidth > 768) inputEl.focus();
+  }
+
+  // События
+  checkBtn.addEventListener('click', checkAnswer);
+  inputEl.addEventListener('keydown', function(e){
+    if (e.key === 'Enter'){ e.preventDefault(); checkAnswer(); }
+  });
+  nextBtn.addEventListener('click', startRound);
+
+  // Запускаем игру когда секция попадает в viewport (экономия ресурсов на десктопе)
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting){
+          startRound();
+          io.disconnect();
+        }
+      });
+    }, { threshold: 0.3 });
+    io.observe(board);
+  } else {
+    startRound();
+  }
+})();
+
+// ============================================================
+// ФИЧА 2: МОДАЛКА "Удиви меня" + рандомное видео
+// ============================================================
+(function(){
+  // 49 видео канала: id → { title, dur }
+  // (Известные ID собраны со страницы; для остальных используется placeholder
+  // с обложкой канала — превью генерируется через img.youtube.com)
+  var VIDEOS = {
+    'twyM_giCq8g': { title: 'Я играл, меня пугали в Resident Evil Requiem', dur: '21:02' },
+    'xLVY2EAa2oE': { title: 'Мы неправильно играли в RPG',                 dur: '15:09' },
+    'haTx-vsEQrw': { title: 'Убить Билла в Ghost of Yotei',                dur: '18:30' },
+    'c-ElmXhr2BU': { title: 'Властелин щита и Ктулху в DOOM: TDA',         dur: '16:07' },
+    'd_rlekxNksk': { title: 'Секрет успеха Clair Obscur: Expedition 33',   dur: '23:10' },
+    'PlA5jEhxKjg': { title: 'Шокирующая тайна Silent Hill',                dur: '16:06' },
+    'W8FBm_gmL_8': { title: 'Зачем нужен Steam Deck в 2024 году',          dur: '22:45' },
+    'ecYRoZDKs7U': { title: 'Я пожалел о покупке Nintendo Switch',         dur: '17:20' },
+    'dC24KgDiNe8': { title: 'СССР, секс и роботы в Atomic Heart',          dur: '24:18' },
+    'aj7dVKmqCnc': { title: 'Elden Ring: Shadow of the Erdtree — разбор',  dur: '26:33' }
+    // Остальные ID канала (~39 шт.) — должны быть подставлены при наличии
+    // полного списка. Текущий набор покрывает все упомянутые на лендинге видео.
+  };
+
+  var ids = Object.keys(VIDEOS);
+  var SS_KEY = 'sc_random_recent';
+  var RECENT_LIMIT = 5;
+
+  function getRecent(){
+    try {
+      var raw = sessionStorage.getItem(SS_KEY);
+      return raw ? JSON.parse(raw) : [];
+    } catch(e){ return []; }
+  }
+  function saveRecent(arr){
+    try { sessionStorage.setItem(SS_KEY, JSON.stringify(arr)); } catch(e){}
+  }
+
+  function pickRandomId(){
+    var recent = getRecent();
+    var pool = ids.filter(function(id){ return recent.indexOf(id) === -1; });
+    if (!pool.length) pool = ids.slice();
+    var picked = pool[Math.floor(Math.random() * pool.length)];
+    recent.push(picked);
+    if (recent.length > RECENT_LIMIT) recent = recent.slice(-RECENT_LIMIT);
+    saveRecent(recent);
+    return picked;
+  }
+
+  var overlay  = document.getElementById('surpriseModal');
+  var btnOpen  = document.getElementById('surpriseBtn');
+  var btnClose = document.getElementById('surpriseClose');
+  var btnAgain = document.getElementById('surpriseAgain');
+  var btnWatch = document.getElementById('surpriseWatch');
+  var thumb    = document.getElementById('surpriseThumb');
+  var titleEl  = document.getElementById('surpriseTitle');
+  var durEl    = document.getElementById('surpriseDur');
+
+  if (!overlay || !btnOpen) return;
+
+  var lastFocused = null;
+
+  function loadVideo(){
+    var id = pickRandomId();
+    var meta = VIDEOS[id] || { title: 'Видео Smile Cut', dur: '' };
+    thumb.src = 'https://img.youtube.com/vi/' + id + '/maxresdefault.jpg';
+    thumb.onerror = function(){
+      thumb.onerror = null;
+      thumb.src = 'https://img.youtube.com/vi/' + id + '/hqdefault.jpg';
+    };
+    thumb.alt = meta.title;
+    titleEl.textContent = meta.title;
+    durEl.textContent = meta.dur || '—';
+    durEl.style.display = meta.dur ? 'block' : 'none';
+    btnWatch.href = 'https://youtube.com/watch?v=' + id;
+  }
+
+  function open(){
+    lastFocused = document.activeElement;
+    loadVideo();
+    overlay.classList.add('visible');
+    overlay.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    // Фокус на close для доступности
+    setTimeout(function(){ btnClose && btnClose.focus(); }, 100);
+  }
+  function close(){
+    overlay.classList.remove('visible');
+    overlay.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    if (lastFocused && lastFocused.focus) lastFocused.focus();
+  }
+
+  btnOpen.addEventListener('click', open);
+  btnClose.addEventListener('click', close);
+  btnAgain.addEventListener('click', loadVideo);
+  // Клик по overlay (но не по карточке) закрывает
+  overlay.addEventListener('click', function(e){
+    if (e.target === overlay) close();
+  });
+
+  // Экспортируем для горячих клавиш
+  window.__sc_showRandom = open;
+  window.__sc_isModalOpen = function(){ return overlay.classList.contains('visible'); };
+  window.__sc_closeModal = close;
+})();
+
+// ============================================================
+// ФИЧА 3: ГОРЯЧИЕ КЛАВИШИ + первичный hotkey-toast
+// ============================================================
+(function(){
+  function isTypingTarget(t){
+    if (!t) return false;
+    var tag = (t.tagName || '').toLowerCase();
+    if (tag === 'input' || tag === 'textarea' || tag === 'select') return true;
+    if (t.isContentEditable) return true;
+    return false;
+  }
+
+  function showToastMsg(msg, link){
+    var toast = document.getElementById('toast');
+    var text  = document.getElementById('toastText');
+    if (!toast || !text) return;
+
+    if (link){
+      text.innerHTML = msg + ' <a class="toast-link" href="' + link.href + '">' + link.label + '</a>';
+    } else {
+      text.textContent = msg;
+    }
+    toast.classList.add('visible');
+    clearTimeout(toast._t);
+    toast._t = setTimeout(function(){ toast.classList.remove('visible'); }, link ? 4500 : 2000);
+  }
+
+  // Привязка к существующей теме
+  function toggleTheme(){
+    var btn = document.getElementById('themeToggle');
+    if (btn) btn.click();
+  }
+
+  function showRandom(){
+    if (typeof window.__sc_showRandom === 'function'){
+      window.__sc_showRandom();
+    } else {
+      var b = document.getElementById('surpriseBtn');
+      if (b) b.click();
+    }
+  }
+
+  function closeAnyModal(){
+    if (typeof window.__sc_closeModal === 'function' && typeof window.__sc_isModalOpen === 'function' && window.__sc_isModalOpen()){
+      window.__sc_closeModal();
+      return true;
+    }
+    return false;
+  }
+
+  document.addEventListener('keydown', function(e){
+    // Esc работает всегда (закрывает модалку, даже если фокус в инпуте)
+    if (e.key === 'Escape'){
+      if (closeAnyModal()){ e.preventDefault(); }
+      return;
+    }
+
+    // Остальные хоткеи — игнорируем при наборе текста
+    if (isTypingTarget(e.target)) return;
+    // Игнорируем с модификаторами (чтобы не ломать Cmd+T / Ctrl+R и т.п.)
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+
+    var key = e.key;
+
+    if (key === '/'){
+      e.preventDefault();
+      // Если есть поле поиска на странице — фокус на него
+      var search = document.querySelector('input[type="search"], input[name="search"], #search, .search-input');
+      if (search){
+        search.focus();
+      } else {
+        showToastMsg('Перейди на страницу всех видео для поиска', { href: 'videos.html', label: 'Открыть →' });
+      }
+    } else if (key === 't' || key === 'T' || key === 'е' || key === 'Е'){
+      // 'е' — русская раскладка на той же физической клавише
+      e.preventDefault();
+      toggleTheme();
+    } else if (key === 'r' || key === 'R' || key === 'к' || key === 'К'){
+      e.preventDefault();
+      showRandom();
+    }
+  });
+
+  // Первичный показ подсказки о хоткеях
+  var HK_KEY = 'sc_hotkey_seen_v1';
+  var hkToast = document.getElementById('hotkeyToast');
+  var hkClose = document.getElementById('hotkeyToastClose');
+  if (!hkToast) return;
+
+  function hideHotkeyToast(){
+    hkToast.classList.remove('visible');
+  }
+
+  if (hkClose){
+    hkClose.addEventListener('click', function(){
+      hideHotkeyToast();
+      try { localStorage.setItem(HK_KEY, '1'); } catch(e){}
+    });
+  }
+
+  var seen = false;
+  try { seen = localStorage.getItem(HK_KEY) === '1'; } catch(e){}
+
+  if (!seen){
+    setTimeout(function(){
+      hkToast.classList.add('visible');
+      // Скрываем через 5 сек после показа
+      setTimeout(function(){
+        hideHotkeyToast();
+        try { localStorage.setItem(HK_KEY, '1'); } catch(e){}
+      }, 5000);
+    }, 3000);
+  }
+})();
+
+// ============================================================
+// КОНТАКТНАЯ ФОРМА — POST /api/contact
+// ============================================================
+(function(){
+  var form     = document.getElementById('contactForm');
+  if (!form) return;
+  var nameEl   = document.getElementById('cName');
+  var contactEl= document.getElementById('cContact');
+  var msgEl    = document.getElementById('cMessage');
+  var counter  = document.getElementById('cCounter');
+  var statusEl = document.getElementById('cStatus');
+  var submit   = document.getElementById('cSubmit');
+
+  function updateCounter(){
+    var n = msgEl.value.length;
+    counter.textContent = n + ' / 500';
+    counter.classList.remove('warn', 'over');
+    if (n > 500) counter.classList.add('over');
+    else if (n > 400) counter.classList.add('warn');
+  }
+  msgEl.addEventListener('input', updateCounter);
+  updateCounter();
+
+  function setStatus(type, msg){
+    statusEl.classList.remove('success', 'error');
+    if (type === 'success' || type === 'error'){
+      statusEl.classList.add(type);
+      statusEl.textContent = msg;
+    } else {
+      statusEl.textContent = '';
+    }
+  }
+
+  function setLoading(on){
+    submit.disabled = on;
+    submit.classList.toggle('loading', on);
+    submit.querySelector('.contact-submit-label').textContent = on ? 'Отправка…' : 'Отправить';
+    nameEl.disabled = on;
+    contactEl.disabled = on;
+    msgEl.disabled = on;
+  }
+
+  form.addEventListener('submit', async function(e){
+    e.preventDefault();
+    setStatus(null);
+
+    var name    = nameEl.value.trim();
+    var contact = contactEl.value.trim();
+    var message = msgEl.value.trim();
+
+    if (!name){ setStatus('error', 'Введи имя'); nameEl.focus(); return; }
+    if (!message){ setStatus('error', 'Введи сообщение'); msgEl.focus(); return; }
+    if (name.length > 500 || message.length > 500 || contact.length > 500){
+      setStatus('error', 'Максимум 500 символов в каждом поле'); return;
+    }
+
+    setLoading(true);
+    try {
+      var res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: name, contact: contact, message: message })
+      });
+      var data = await res.json().catch(function(){ return {}; });
+
+      if (res.ok && data.ok){
+        setStatus('success', '✓ Сообщение отправлено! Спасибо.');
+        form.reset();
+        updateCounter();
+      } else {
+        var err = data.error || 'Не удалось отправить. Попробуйте позже.';
+        setStatus('error', err);
+      }
+    } catch(err){
+      setStatus('error', 'Сеть недоступна. Проверьте соединение.');
+    } finally {
+      setLoading(false);
+    }
+  });
 })();
 </script>
 </body>
