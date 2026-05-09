@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -11,7 +11,7 @@
 <meta name="author" content="Smile Cut">
 <link rel="canonical" href="https://unagi47.github.io/smile-cut/">
 
-<!-- Open Graph — красивые карточки при шаринге в ВК, ТГ, соцсетях -->
+<!-- Open Graph -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Smile Cut">
 <meta property="og:title" content="Smile Cut | Обзоры и разборы игр">
@@ -26,27 +26,124 @@
 <meta name="twitter:description" content="Честный взгляд на игры. 49 видео, 594К просмотров.">
 <meta name="twitter:image" content="https://img.youtube.com/vi/W8FBm_gmL_8/maxresdefault.jpg">
 
-<!-- Favicon — inline SVG, всегда работает без 404 -->
+<!-- Favicon -->
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%231a1a28'/><text y='.9em' font-size='80' x='10'>🎮</text></svg>">
 <link rel="apple-touch-icon" href="https://yt3.googleusercontent.com/ytc/AIdro_mJnTs8xH7hUFUFTbLmz6wlEx0-MKy2DgX3BGnJ2g=s88-c-k-c0x00ffffff-no-rj">
+
+<!-- Раннее применение темы — ДО рендера, чтобы избежать вспышки -->
+<script>
+(function(){
+  try {
+    var t = localStorage.getItem('sc-theme');
+    if (t === 'light' || t === 'dark') {
+      document.documentElement.setAttribute('data-theme', t);
+    }
+  } catch(e) {}
+})();
+</script>
 
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--pink:#e040a0;--purple:#7b2fff;--bg:#0d0d12;--bg2:#13131c;--bg3:#1a1a28;--text:#f0eaf8;--muted:#8a7fa0;--border:rgba(224,64,160,0.18);}
+:root{
+  --pink:#e040a0;
+  --purple:#7b2fff;
+  --bg:#0d0d12;
+  --bg2:#13131c;
+  --bg3:#1a1a28;
+  --text:#f0eaf8;
+  --muted:#8a7fa0;
+  --border:rgba(224,64,160,0.18);
+  --overlay-card:rgba(13,13,18,0.78);
+  --shadow-card:0 8px 32px rgba(224,64,160,0.15);
+  --toast-bg:rgba(26,26,40,0.96);
+  --toast-border:rgba(224,64,160,0.4);
+  --nav-bg:rgba(13,13,18,0.92);
+  --grid-line:rgba(224,64,160,0.04);
+}
+
+/* ===== СВЕТЛАЯ ТЕМА ===== */
+[data-theme="light"]{
+  --bg:#f5f0e8;
+  --bg2:#ebe4d8;
+  --bg3:#e0d7c5;
+  --text:#1a1a14;
+  --muted:#6b5d4a;
+  --border:rgba(224,64,160,0.25);
+  --overlay-card:rgba(245,240,232,0.85);
+  --shadow-card:0 8px 32px rgba(123,47,255,0.12);
+  --toast-bg:rgba(245,240,232,0.98);
+  --toast-border:rgba(224,64,160,0.5);
+  --nav-bg:rgba(245,240,232,0.92);
+  --grid-line:rgba(224,64,160,0.07);
+}
+
 *{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
-body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;}
-.nav{background:rgba(13,13,18,0.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);padding:0 2rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+body{
+  font-family:'Inter',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+  transition:background-color .4s ease, color .4s ease;
+}
+
+/* ===== ПРОГРЕСС-БАР СКРОЛЛА ===== */
+.scroll-progress{
+  position:fixed;
+  top:0;left:0;
+  height:2px;
+  width:0%;
+  background:linear-gradient(90deg,var(--pink),var(--purple));
+  z-index:300;
+  pointer-events:none;
+  transition:width .08s linear;
+  box-shadow:0 0 8px rgba(224,64,160,.6);
+}
+
+/* ===== NAV ===== */
+.nav{background:var(--nav-bg);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--border);padding:0 2rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;transition:background-color .4s ease, border-color .4s ease;}
 .nav-logo{font-family:'Oswald',sans-serif;font-size:1.3rem;font-weight:700;letter-spacing:.12em;background:linear-gradient(90deg,var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none;}
+.nav-right{display:flex;align-items:center;gap:12px;}
 .nav-links{display:flex;gap:6px;}
-.nav-links a{font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:6px 14px;border-radius:20px;border:1px solid transparent;transition:all .2s;}
+.nav-links a{font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:6px 14px;border-radius:20px;border:1px solid transparent;transition:all .3s ease;}
 .nav-links a:hover{color:var(--pink);border-color:var(--border);}
 .nav-links a.active{color:var(--pink);border-color:var(--border);background:rgba(224,64,160,.08);}
+
+/* ===== ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ ===== */
+.theme-toggle{
+  width:36px;height:36px;
+  border-radius:50%;
+  background:transparent;
+  border:1px solid var(--border);
+  color:var(--text);
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .3s ease;
+  position:relative;
+  overflow:hidden;
+  flex-shrink:0;
+}
+.theme-toggle:hover{
+  border-color:var(--pink);
+  color:var(--pink);
+  transform:rotate(15deg);
+}
+.theme-toggle svg{
+  width:18px;height:18px;
+  transition:transform .5s cubic-bezier(.34,1.56,.64,1), opacity .3s ease;
+  position:absolute;
+}
+.theme-toggle .icon-sun{opacity:0;transform:rotate(-90deg) scale(.5);}
+.theme-toggle .icon-moon{opacity:1;transform:rotate(0) scale(1);}
+[data-theme="light"] .theme-toggle .icon-sun{opacity:1;transform:rotate(0) scale(1);}
+[data-theme="light"] .theme-toggle .icon-moon{opacity:0;transform:rotate(90deg) scale(.5);}
+
+/* ===== HERO ===== */
 .hero{min-height:92vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:3rem;padding:3rem 3rem 3rem 4rem;position:relative;overflow:hidden;}
 .hero-bg{position:absolute;inset:0;z-index:0;background:radial-gradient(ellipse 60% 60% at 70% 40%,rgba(123,47,255,.15) 0%,transparent 65%),radial-gradient(ellipse 40% 40% at 30% 70%,rgba(224,64,160,.1) 0%,transparent 60%);}
-.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(224,64,160,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(224,64,160,.04) 1px,transparent 1px);background-size:40px 40px;}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);background-size:40px 40px;}
 .hero-text{position:relative;z-index:2;}
 .hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(224,64,160,.12);border:1px solid rgba(224,64,160,.3);padding:5px 14px;border-radius:20px;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--pink);margin-bottom:1.4rem;animation:fadeUp .6s .1s both;}
 .hero-tag::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--pink);display:inline-block;animation:pulse 2s infinite;}
@@ -56,13 +153,14 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overf
 .hero-desc{font-size:1rem;line-height:1.75;color:var(--muted);max-width:380px;margin-bottom:2rem;animation:fadeUp .7s .35s both;}
 .hero-desc em{color:var(--text);font-style:normal;}
 .hero-stats{display:flex;gap:2rem;margin-bottom:2.5rem;animation:fadeUp .7s .45s both;}
-.stat-val{font-family:'Oswald',sans-serif;font-size:1.8rem;font-weight:700;color:var(--text);line-height:1;}
+.stat-val{font-family:'Oswald',sans-serif;font-size:1.8rem;font-weight:700;color:var(--text);line-height:1;font-variant-numeric:tabular-nums;}
 .stat-lab{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:3px;}
 .stat-div{width:1px;background:var(--border);}
 .hero-btns{display:flex;gap:12px;flex-wrap:wrap;animation:fadeUp .7s .55s both;}
-.btn-primary{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;padding:.75rem 1.6rem;border-radius:4px;font-size:.82rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;transition:opacity .2s,transform .2s;}
+.btn-primary{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;padding:.75rem 1.6rem;border-radius:4px;font-size:.82rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;transition:opacity .3s,transform .3s;}
 .btn-primary:hover{opacity:.88;transform:translateY(-2px);}
-.btn-ghost{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--text);padding:.75rem 1.6rem;border-radius:4px;border:1px solid rgba(255,255,255,.15);font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;transition:border-color .2s,transform .2s;}
+.btn-ghost{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--text);padding:.75rem 1.6rem;border-radius:4px;border:1px solid var(--border);font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;transition:border-color .3s,transform .3s;}
+[data-theme="dark"] .btn-ghost{border-color:rgba(255,255,255,.15);}
 .btn-ghost:hover{border-color:var(--pink);transform:translateY(-2px);}
 .hero-visual{position:relative;z-index:2;animation:scaleIn .9s .3s both;}
 .player-wrap{width:100%;border-radius:6px;overflow:hidden;border:2px solid rgba(224,64,160,.3);box-shadow:0 0 60px rgba(224,64,160,.2);aspect-ratio:16/9;background:#000;position:relative;}
@@ -72,54 +170,195 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overf
 .tl{position:absolute;inset:0;cursor:pointer;}
 .tl img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s;}
 .tl:hover img{transform:scale(1.03);}
-.play-ov{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:rgba(0,0,0,.28);transition:background .25s;}
+.play-ov{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:rgba(0,0,0,.28);transition:background .3s;}
 .tl:hover .play-ov{background:rgba(0,0,0,.48);}
-.play-btn{width:68px;height:68px;border-radius:50%;background:linear-gradient(135deg,var(--pink),var(--purple));display:flex;align-items:center;justify-content:center;transition:transform .25s;box-shadow:0 0 40px rgba(224,64,160,.6);}
+.play-btn{width:68px;height:68px;border-radius:50%;background:linear-gradient(135deg,var(--pink),var(--purple));display:flex;align-items:center;justify-content:center;transition:transform .3s;box-shadow:0 0 40px rgba(224,64,160,.6);}
 .tl:hover .play-btn{transform:scale(1.12);}
 .play-btn svg{width:26px;height:26px;fill:#fff;margin-left:5px;}
 .play-note{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.7);}
-.section{padding:5rem 3rem;}
+
+/* ===== SECTIONS ===== */
+.section{padding:5rem 3rem;transition:background-color .4s ease;}
 .eyebrow{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--pink);margin-bottom:.6rem;display:flex;align-items:center;gap:10px;}
 .eyebrow::after{content:'';flex:0 0 24px;height:1px;background:var(--pink);}
 .sec-title{font-family:'Oswald',sans-serif;font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:700;color:var(--text);margin-bottom:2.5rem;letter-spacing:.02em;}
 .sec-header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:2.5rem;}
 .sec-header .sec-title{margin-bottom:0;}
-.see-all{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--pink);text-decoration:none;border-bottom:1px solid rgba(224,64,160,.3);padding-bottom:2px;transition:border-color .2s;}
+.see-all{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--pink);text-decoration:none;border-bottom:1px solid rgba(224,64,160,.3);padding-bottom:2px;transition:border-color .3s;}
 .see-all:hover{border-color:var(--pink);}
 .vscroll-wrap{overflow-x:auto;margin:0 -3rem;padding:0 3rem 1rem;scrollbar-width:thin;scrollbar-color:var(--pink) transparent;}
 .vscroll-wrap::-webkit-scrollbar{height:3px;}
 .vscroll-wrap::-webkit-scrollbar-thumb{background:var(--pink);border-radius:2px;}
 .vgrid{display:flex;gap:1rem;width:max-content;}
-.vcard{background:var(--bg3);border-radius:6px;overflow:hidden;border:1px solid var(--border);transition:transform .25s,border-color .25s,box-shadow .25s;text-decoration:none;display:block;width:272px;flex-shrink:0;}
-.vcard:hover{transform:translateY(-4px);border-color:rgba(224,64,160,.5);box-shadow:0 8px 32px rgba(224,64,160,.15);}
+
+/* ===== VIDEO CARDS — улучшенные ===== */
+.vcard{
+  background:var(--bg3);
+  border-radius:6px;
+  overflow:hidden;
+  border:1px solid var(--border);
+  transition:transform .3s ease, border-color .3s ease, box-shadow .3s ease, background-color .4s ease;
+  text-decoration:none;
+  display:block;
+  width:272px;
+  flex-shrink:0;
+  position:relative;
+}
+.vcard:hover{transform:translateY(-4px);border-color:rgba(224,64,160,.5);box-shadow:var(--shadow-card);}
 .vthumb{aspect-ratio:16/9;overflow:hidden;position:relative;background:var(--bg2);}
-.vthumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s;}
-.vcard:hover .vthumb img{transform:scale(1.06);}
-.vdur{position:absolute;bottom:6px;right:8px;background:rgba(0,0,0,.85);color:#fff;font-size:11px;padding:2px 6px;border-radius:3px;}
+.vthumb img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .5s cubic-bezier(.25,.46,.45,.94);
+}
+.vcard:hover .vthumb img{transform:scale(1.08);}
+.vdur{position:absolute;bottom:6px;right:8px;background:rgba(0,0,0,.85);color:#fff;font-size:11px;padding:2px 6px;border-radius:3px;z-index:3;}
+
+/* Hover-оверлей с кнопкой "Смотреть" */
+.v-overlay{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(180deg, rgba(13,13,18,.2) 0%, rgba(13,13,18,.85) 60%, rgba(13,13,18,.95) 100%);
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  align-items:center;
+  padding:1rem;
+  opacity:0;
+  transition:opacity .3s ease;
+  z-index:2;
+  pointer-events:none;
+}
+.vcard:hover .v-overlay{opacity:1;}
+.v-overlay-title{
+  font-size:.95rem;
+  font-weight:600;
+  color:#fff;
+  text-align:center;
+  line-height:1.35;
+  margin-bottom:.8rem;
+  transform:translateY(10px);
+  transition:transform .35s ease .05s;
+  text-shadow:0 2px 12px rgba(0,0,0,.6);
+}
+.vcard:hover .v-overlay-title{transform:translateY(0);}
+.v-watch-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  background:linear-gradient(135deg,var(--pink),var(--purple));
+  color:#fff;
+  padding:.5rem 1.1rem;
+  border-radius:20px;
+  font-size:.72rem;
+  font-weight:600;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  transform:translateY(10px);
+  transition:transform .35s ease .1s;
+  box-shadow:0 4px 16px rgba(224,64,160,.4);
+}
+.vcard:hover .v-watch-btn{transform:translateY(0);}
+.v-watch-btn svg{width:11px;height:11px;fill:currentColor;}
+
+/* НОВОЕ — бейдж */
+.new-badge{
+  position:absolute;
+  top:8px;
+  left:8px;
+  z-index:4;
+  background:linear-gradient(135deg,var(--pink),var(--purple));
+  color:#fff;
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  padding:3px 9px;
+  border-radius:20px;
+  box-shadow:0 2px 12px rgba(224,64,160,.5);
+  animation:newPulse 2s ease-in-out infinite;
+}
+@keyframes newPulse{
+  0%,100%{transform:scale(1);box-shadow:0 2px 12px rgba(224,64,160,.5);}
+  50%{transform:scale(1.08);box-shadow:0 2px 18px rgba(224,64,160,.8);}
+}
+
+/* Кнопка "Поделиться" на карточке */
+.v-share{
+  position:absolute;
+  top:8px;
+  right:8px;
+  z-index:5;
+  width:32px;height:32px;
+  border-radius:50%;
+  background:rgba(13,13,18,.85);
+  border:1px solid rgba(255,255,255,.15);
+  color:#fff;
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;
+  transform:translateY(-4px);
+  transition:opacity .3s ease, transform .3s ease, background-color .25s ease, border-color .25s ease;
+  pointer-events:none;
+  backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(6px);
+  padding:0;
+}
+.vcard:hover .v-share{opacity:1;transform:translateY(0);pointer-events:auto;}
+.v-share:hover{background:linear-gradient(135deg,var(--pink),var(--purple));border-color:transparent;transform:translateY(0) scale(1.1);}
+.v-share svg{width:14px;height:14px;fill:currentColor;}
+.v-share:focus-visible{outline:2px solid var(--pink);outline-offset:2px;opacity:1;pointer-events:auto;}
+
 .vinfo{padding:12px 14px;}
 .vtitle{font-size:.86rem;font-weight:500;color:var(--text);line-height:1.4;margin-bottom:5px;}
 .vmeta{font-size:.73rem;color:var(--muted);}
 .vmeta span{color:var(--pink);font-weight:500;}
 
-/* === TG LIVE FEED — full width 2-col card grid === */
-.tg-s{background:var(--bg2);padding:5rem 3rem;position:relative;overflow:hidden;}
+/* ===== TOAST ===== */
+.toast{
+  position:fixed;
+  bottom:2rem;
+  left:50%;
+  transform:translateX(-50%) translateY(100px);
+  background:var(--toast-bg);
+  border:1px solid var(--toast-border);
+  color:var(--text);
+  padding:.8rem 1.4rem;
+  border-radius:30px;
+  font-size:.82rem;
+  font-weight:500;
+  letter-spacing:.02em;
+  z-index:400;
+  display:flex;align-items:center;gap:10px;
+  box-shadow:0 8px 32px rgba(0,0,0,.4), 0 0 24px rgba(224,64,160,.2);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  opacity:0;
+  pointer-events:none;
+  transition:transform .4s cubic-bezier(.34,1.56,.64,1), opacity .3s ease;
+}
+.toast.visible{
+  transform:translateX(-50%) translateY(0);
+  opacity:1;
+}
+.toast svg{width:16px;height:16px;fill:var(--pink);flex-shrink:0;}
+
+/* === TG LIVE FEED === */
+.tg-s{background:var(--bg2);padding:5rem 3rem;position:relative;overflow:hidden;transition:background-color .4s ease;}
 .tg-s::before{content:'';position:absolute;right:-100px;top:-100px;width:600px;height:600px;background:radial-gradient(circle,rgba(41,182,246,.05) 0%,transparent 70%);border-radius:50%;pointer-events:none;}
-/* Header row */
-.tg-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:1px solid rgba(255,255,255,.06);}
+.tg-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border);}
 .tg-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(41,182,246,.08);border:1px solid rgba(41,182,246,.2);padding:4px 12px;border-radius:20px;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:#29b6f6;margin-bottom:.7rem;}
 .tg-live-dot{width:5px;height:5px;border-radius:50%;background:#29b6f6;animation:pulse 2s infinite;}
 .tg-title{font-family:'Oswald',sans-serif;font-size:clamp(1.6rem,2.5vw,2.2rem);font-weight:700;color:var(--text);line-height:1;}
-.tg-btn{display:inline-flex;align-items:center;gap:9px;background:transparent;color:#29b6f6;border:1px solid rgba(41,182,246,.3);padding:.65rem 1.4rem;border-radius:4px;font-size:.78rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;transition:all .2s;flex-shrink:0;}
+.tg-btn{display:inline-flex;align-items:center;gap:9px;background:transparent;color:#29b6f6;border:1px solid rgba(41,182,246,.3);padding:.65rem 1.4rem;border-radius:4px;font-size:.78rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;transition:all .3s;flex-shrink:0;}
 .tg-btn:hover{background:rgba(41,182,246,.08);border-color:rgba(41,182,246,.6);transform:translateY(-1px);}
 .tg-btn svg{opacity:.8;}
-/* 2-col card grid */
-.tg-feed{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.05);border-radius:6px;overflow:hidden;}
-.tg-post{display:flex;align-items:flex-start;gap:1.2rem;padding:1.5rem 1.8rem;background:var(--bg2);text-decoration:none;transition:background .2s;}
+.tg-feed{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:6px;overflow:hidden;}
+.tg-post{display:flex;align-items:flex-start;gap:1.2rem;padding:1.5rem 1.8rem;background:var(--bg2);text-decoration:none;transition:background .3s;}
 .tg-post:hover{background:rgba(41,182,246,.04);}
 .tg-post:hover .tg-post-text{color:var(--text);}
 .tg-post:hover .tg-post-arrow{opacity:1;color:#29b6f6;}
-.tg-post-thumb{width:76px;height:76px;border-radius:5px;object-fit:cover;flex-shrink:0;background:var(--bg3);border:1px solid rgba(255,255,255,.06);}
-.tg-post-thumb-placeholder{width:76px;height:76px;border-radius:5px;background:var(--bg3);border:1px solid rgba(255,255,255,.06);flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.tg-post-thumb{width:76px;height:76px;border-radius:5px;object-fit:cover;flex-shrink:0;background:var(--bg3);border:1px solid var(--border);}
+.tg-post-thumb-placeholder{width:76px;height:76px;border-radius:5px;background:var(--bg3);border:1px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;}
 .tg-post-thumb-placeholder svg{width:22px;height:22px;opacity:.18;}
 .tg-post-body{flex:1;min-width:0;}
 .tg-post-meta{display:flex;align-items:center;gap:10px;margin-bottom:.5rem;}
@@ -127,35 +366,34 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overf
 .tg-post-date{font-size:.7rem;color:var(--muted);letter-spacing:.03em;}
 .tg-post-views{font-size:.7rem;color:var(--muted);}
 .tg-post-views::before{content:'·';margin-right:6px;}
-.tg-post-text{font-size:clamp(.83rem,1vw,.93rem);color:rgba(240,234,248,.72);line-height:1.65;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;transition:color .2s;}
-.tg-post-arrow{font-size:.7rem;color:rgba(41,182,246,.4);margin-top:.4rem;display:block;letter-spacing:.03em;transition:all .2s;opacity:0;}
-/* Skeleton */
+.tg-post-text{font-size:clamp(.83rem,1vw,.93rem);color:var(--muted);line-height:1.65;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;transition:color .3s;}
+.tg-post-arrow{font-size:.7rem;color:rgba(41,182,246,.4);margin-top:.4rem;display:block;letter-spacing:.03em;transition:all .3s;opacity:0;}
 .tg-skeleton{display:flex;align-items:flex-start;gap:1.2rem;padding:1.5rem 1.8rem;background:var(--bg2);}
-.tg-sk-thumb{width:76px;height:76px;border-radius:5px;background:rgba(255,255,255,.04);flex-shrink:0;animation:shimmer 1.5s infinite;}
+.tg-sk-thumb{width:76px;height:76px;border-radius:5px;background:var(--border);flex-shrink:0;animation:shimmer 1.5s infinite;}
 .tg-sk-body{flex:1;display:flex;flex-direction:column;gap:8px;padding-top:4px;}
-.tg-sk-line{height:9px;background:rgba(255,255,255,.04);border-radius:3px;animation:shimmer 1.5s infinite;}
-/* Error */
+.tg-sk-line{height:9px;background:var(--border);border-radius:3px;animation:shimmer 1.5s infinite;}
 .tg-error{grid-column:span 2;padding:3rem;text-align:center;}
 .tg-error p{font-size:.9rem;color:var(--muted);margin-bottom:1.2rem;}
 
 /* CTA */
-.cta-s{background:var(--bg);padding:5rem 3rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;position:relative;overflow:hidden;}
+.cta-s{background:var(--bg);padding:5rem 3rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;position:relative;overflow:hidden;transition:background-color .4s ease;}
 .cta-glow{position:absolute;left:-100px;top:50%;transform:translateY(-50%);width:400px;height:400px;background:radial-gradient(circle,rgba(224,64,160,.1) 0%,transparent 70%);border-radius:50%;}
 .cta-txt{position:relative;z-index:1;}
 .cta-q{font-family:'Oswald',sans-serif;font-size:clamp(1.6rem,3vw,2.4rem);font-weight:700;line-height:1.1;color:var(--text);margin-bottom:1rem;}
 .cta-q span{background:linear-gradient(90deg,var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
 .cta-sub{font-size:.95rem;color:var(--muted);line-height:1.7;margin-bottom:2rem;}
 .cta-chs{display:flex;flex-direction:column;gap:10px;}
-.cch{display:flex;align-items:center;gap:12px;background:var(--bg3);border:1px solid var(--border);padding:12px 16px;border-radius:6px;text-decoration:none;transition:border-color .2s,transform .2s;}
+.cch{display:flex;align-items:center;gap:12px;background:var(--bg3);border:1px solid var(--border);padding:12px 16px;border-radius:6px;text-decoration:none;transition:border-color .3s,transform .3s,background-color .4s;}
 .cch:hover{border-color:rgba(224,64,160,.5);transform:translateX(4px);}
 .cch-icon{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .cch-name{font-size:.85rem;font-weight:500;color:var(--text);}
 .cch-handle{font-size:.75rem;color:var(--muted);}
 .cta-img{position:relative;z-index:1;border-radius:8px;overflow:hidden;border:2px solid rgba(123,47,255,.3);box-shadow:0 0 80px rgba(123,47,255,.15);aspect-ratio:16/9;background:var(--bg3);}
 .cta-img img{width:100%;height:100%;object-fit:cover;display:block;}
-.top-s{background:var(--bg2);}
+
+.top-s{background:var(--bg2);transition:background-color .4s ease;}
 .tgrid{display:grid;grid-template-columns:1.8fr 1fr 1fr;gap:1.2rem;}
-.tcard{background:var(--bg3);border-radius:6px;overflow:hidden;border:1px solid var(--border);transition:transform .25s,box-shadow .25s;text-decoration:none;display:block;position:relative;}
+.tcard{background:var(--bg3);border-radius:6px;overflow:hidden;border:1px solid var(--border);transition:transform .3s,box-shadow .3s,background-color .4s;text-decoration:none;display:block;position:relative;}
 .tcard:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(224,64,160,.2);}
 .tcard.feat{border-color:rgba(224,64,160,.4);}
 .tbadge{position:absolute;top:10px;left:10px;z-index:2;background:linear-gradient(90deg,var(--pink),var(--purple));color:#fff;font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border-radius:20px;font-weight:600;}
@@ -166,28 +404,69 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overf
 .ttitle{font-size:.88rem;font-weight:500;color:var(--text);line-height:1.35;margin-bottom:6px;}
 .tviews{font-size:.8rem;color:var(--pink);font-weight:500;}
 .tdesc{font-size:.75rem;color:var(--muted);margin-top:5px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
-.footer{background:var(--bg);border-top:1px solid var(--border);padding:2rem 3rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
+
+.footer{background:var(--bg);border-top:1px solid var(--border);padding:2rem 3rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;transition:background-color .4s ease, border-color .4s ease;}
 .flogo{font-family:'Oswald',sans-serif;font-size:1.1rem;font-weight:700;letter-spacing:.12em;background:linear-gradient(90deg,var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
 .fnav{display:flex;gap:6px;flex-wrap:wrap;}
-.fnav a{font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:5px 14px;border:1px solid rgba(255,255,255,.08);border-radius:20px;transition:all .2s;}
-.fnav a:hover{color:var(--pink);border-color:var(--border);}
-.fcopy{font-size:.72rem;color:rgba(255,255,255,.2);}
+.fnav a{font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:5px 14px;border:1px solid var(--border);border-radius:20px;transition:all .3s;}
+.fnav a:hover{color:var(--pink);border-color:var(--pink);}
+.fcopy{font-size:.72rem;color:var(--muted);opacity:.6;}
+
+/* ===== SCROLL-АНИМАЦИИ ===== */
+.reveal{
+  opacity:0;
+  transform:translateY(20px);
+  transition:opacity .7s ease, transform .7s cubic-bezier(.25,.46,.45,.94);
+  will-change:opacity, transform;
+}
+.reveal.is-visible{
+  opacity:1;
+  transform:translateY(0);
+}
+/* Stagger для карточек внутри секции */
+.reveal-stagger > .reveal{
+  transition-delay:0s;
+}
+.reveal-stagger > .reveal.is-visible:nth-child(1){transition-delay:.05s;}
+.reveal-stagger > .reveal.is-visible:nth-child(2){transition-delay:.12s;}
+.reveal-stagger > .reveal.is-visible:nth-child(3){transition-delay:.19s;}
+.reveal-stagger > .reveal.is-visible:nth-child(4){transition-delay:.26s;}
+.reveal-stagger > .reveal.is-visible:nth-child(5){transition-delay:.33s;}
+.reveal-stagger > .reveal.is-visible:nth-child(6){transition-delay:.4s;}
+
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
 @keyframes scaleIn{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:scale(1)}}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 @keyframes shimmer{0%{opacity:.4}50%{opacity:.8}100%{opacity:.4}}
 
+/* ===== REDUCED MOTION ===== */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;
+    scroll-behavior:auto !important;
+  }
+  .reveal{opacity:1;transform:none;}
+  .new-badge{animation:none;}
+  .scroll-progress{transition:none;}
+  .vcard:hover .vthumb img{transform:none;}
+  .vcard:hover .v-overlay-title,
+  .vcard:hover .v-watch-btn{transform:none;}
+}
+
 /* ============================================================
    MOBILE — max-width 768px
    ============================================================ */
 @media(max-width:768px){
-  /* Nav */
   .nav{padding:0 1rem;height:52px;}
+  .nav-right{gap:8px;}
   .nav-links{overflow-x:auto;scrollbar-width:none;gap:2px;}
   .nav-links::-webkit-scrollbar{display:none;}
   .nav-links a{font-size:.68rem;padding:5px 10px;white-space:nowrap;}
+  .theme-toggle{width:32px;height:32px;}
+  .theme-toggle svg{width:16px;height:16px;}
 
-  /* Hero — video on top, text below */
   .hero{grid-template-columns:1fr;min-height:auto;padding:2rem 1.2rem 3rem;gap:2rem;}
   .hero-visual{order:-1;}
   .hero-desc{max-width:100%;font-size:.95rem;}
@@ -196,30 +475,42 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overf
   .hero-btns{gap:10px;}
   .btn-primary,.btn-ghost{padding:.7rem 1.2rem;font-size:.78rem;}
 
-  /* Sections */
   .section{padding:3rem 1.2rem;}
   .sec-header{flex-direction:column;gap:.4rem;align-items:flex-start;}
   .vscroll-wrap{margin:0 -1.2rem;padding:0 1.2rem 1rem;}
-  .vcard{width:200px;}
+  .vcard{width:220px;}
   .vcard .vinfo{padding:10px 12px;}
   .vcard .vtitle{font-size:.82rem;}
 
-  /* TG section — stack to 1 col on mobile */
+  /* На мобиле share — всегда видна, не скрываем */
+  .v-share{
+    opacity:1;
+    transform:translateY(0);
+    pointer-events:auto;
+    width:30px;height:30px;
+  }
+  .v-share svg{width:13px;height:13px;}
+  /* Hover-оверлей на мобиле работает только при tap (через :active) */
+  .vcard:active .v-overlay{opacity:1;}
+  .v-overlay{padding:.8rem;}
+  .v-overlay-title{font-size:.85rem;margin-bottom:.6rem;}
+  .v-watch-btn{padding:.45rem .9rem;font-size:.68rem;}
+  .new-badge{font-size:8px;padding:2px 7px;}
+
+  .toast{bottom:1.2rem;font-size:.78rem;padding:.7rem 1.2rem;max-width:calc(100% - 2rem);}
+
   .tg-s{padding:3rem 1.2rem;}
   .tg-head{flex-direction:column;align-items:flex-start;gap:1.2rem;margin-bottom:1.5rem;}
   .tg-feed{grid-template-columns:1fr;}
   .tg-post,.tg-skeleton{padding:1.2rem 1rem;}
   .tg-post-thumb,.tg-post-thumb-placeholder,.tg-sk-thumb{width:64px;height:64px;}
 
-  /* CTA */
   .cta-s{grid-template-columns:1fr;padding:3rem 1.2rem;gap:2rem;}
   .cta-img{display:none;}
   .cta-q{font-size:1.5rem;}
 
-  /* Top videos — single column */
   .tgrid{grid-template-columns:1fr;gap:1rem;}
 
-  /* Footer */
   .footer{padding:1.5rem 1.2rem;flex-direction:column;align-items:flex-start;gap:1rem;}
   .fnav a{font-size:.7rem;padding:4px 10px;}
 }
@@ -237,7 +528,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overf
 }
 
 /* === ABOUT === */
-.about-s{background:var(--bg3);padding:5rem 3rem;position:relative;overflow:hidden;}
+.about-s{background:var(--bg3);padding:5rem 3rem;position:relative;overflow:hidden;transition:background-color .4s ease;}
 .about-s::before{content:'';position:absolute;left:-150px;bottom:-150px;width:500px;height:500px;background:radial-gradient(circle,rgba(224,64,160,.06) 0%,transparent 70%);border-radius:50%;pointer-events:none;}
 .about-inner{display:grid;grid-template-columns:1fr 1.6fr;gap:5rem;align-items:center;position:relative;z-index:1;}
 .about-avatar-wrap{display:flex;flex-direction:column;align-items:center;gap:1.5rem;}
@@ -248,7 +539,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overf
 .about-quote em{font-style:normal;background:linear-gradient(90deg,var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
 .about-text{font-size:.95rem;color:var(--muted);line-height:1.8;margin-bottom:2rem;}
 .about-pills{display:flex;flex-wrap:wrap;gap:8px;}
-.about-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);padding:6px 14px;border-radius:20px;font-size:.78rem;color:var(--text);letter-spacing:.04em;}
+.about-pill{display:inline-flex;align-items:center;gap:6px;background:var(--bg2);border:1px solid var(--border);padding:6px 14px;border-radius:20px;font-size:.78rem;color:var(--text);letter-spacing:.04em;}
 .about-pill-icon{font-size:.9rem;}
 
 /* === STICKY CTA === */
@@ -278,9 +569,17 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overf
   .btn-primary,.btn-ghost{width:100%;justify-content:center;}
   .tg-post-thumb,.tg-post-thumb-placeholder,.tg-sk-thumb{width:52px;height:52px;}
   .tgrid{gap:.8rem;}
+  .vcard{width:200px;}
+  .v-overlay-title{font-size:.78rem;-webkit-line-clamp:2;display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden;}
+  .v-watch-btn{padding:.4rem .8rem;font-size:.65rem;}
+  .v-share{width:28px;height:28px;}
+  .v-share svg{width:12px;height:12px;}
+  .new-badge{font-size:7px;padding:2px 6px;letter-spacing:.08em;}
+  .toast{font-size:.74rem;padding:.6rem 1rem;}
+  .nav-logo{font-size:1.1rem;}
 }
 </style>
-<!-- Schema.org — Google покажет видео прямо в поиске -->
+<!-- Schema.org -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -311,21 +610,50 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overf
 </head>
 <body>
 
+<!-- Прогресс-бар скролла -->
+<div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
 <nav class="nav">
   <a class="nav-logo" href="index.html">Smile Cut</a>
-  <div class="nav-links">
-    <a href="index.html" class="active">Главная</a>
-    <a href="#about">О канале</a>
-    <a href="#top">Популярные</a>
-    <a href="videos.html">Все видео</a>
+  <div class="nav-right">
+    <div class="nav-links">
+      <a href="index.html" class="active">Главная</a>
+      <a href="#top">Популярные</a>
+      <a href="#tg">Telegram</a>
+      <a href="videos.html">Все видео</a>
+    </div>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Переключить тему" title="Переключить тему">
+      <!-- Луна (показывается в тёмной теме) -->
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+      <!-- Солнце (показывается в светлой теме) -->
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="4"/>
+        <line x1="12" y1="2" x2="12" y2="5"/>
+        <line x1="12" y1="19" x2="12" y2="22"/>
+        <line x1="4.22" y1="4.22" x2="6.34" y2="6.34"/>
+        <line x1="17.66" y1="17.66" x2="19.78" y2="19.78"/>
+        <line x1="2" y1="12" x2="5" y2="12"/>
+        <line x1="19" y1="12" x2="22" y2="12"/>
+        <line x1="4.22" y1="19.78" x2="6.34" y2="17.66"/>
+        <line x1="17.66" y1="6.34" x2="19.78" y2="4.22"/>
+      </svg>
+    </button>
   </div>
 </nav>
 
-<!-- Sticky CTA — появляется после скролла 40% -->
+<!-- Sticky CTA -->
 <a class="sticky-cta" id="stickyCta" href="https://www.youtube.com/@unagi47?sub_confirmation=1" target="_blank">
   <svg viewBox="0 0 24 24"><path d="M10 15l5.19-3L10 9v6m11.56-7.83c.13.47.22 1.1.28 1.9.07.8.1 1.49.1 2.09L22 12c0 2.19-.16 3.8-.44 4.83-.25.9-.83 1.48-1.73 1.73-.47.13-1.33.22-2.65.28-1.3.07-2.49.1-3.59.1L12 19c-4.19 0-6.8-.16-7.83-.44-.9-.25-1.48-.83-1.73-1.73-.13-.47-.22-1.1-.28-1.9-.07-.8-.1-1.49-.1-2.09L2 12c0-2.19.16-3.8.44-4.83.25-.9.83-1.48 1.73-1.73.47-.13 1.33-.22 2.65-.28 1.3-.07 2.49-.1 3.59-.1L12 5c4.19 0 6.8.16 7.83.44.9.25 1.48.83 1.73 1.73z"/></svg>
   Подписаться
 </a>
+
+<!-- Toast (для копирования ссылки) -->
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+  <span id="toastText">Ссылка скопирована</span>
+</div>
 
 <section class="hero">
   <div class="hero-bg"></div><div class="hero-grid"></div>
@@ -334,11 +662,11 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overf
     <h1><span class="l1">Мы все здесь</span><span class="l2">ради возмездия.</span></h1>
     <p class="hero-desc">Обзоры, мнения, разборы игр — от <em>Steam Deck</em> до <em>Shadow of the Erdtree</em>. Честно, без воды.</p>
     <div class="hero-stats">
-      <div><div class="stat-val">1.2K</div><div class="stat-lab">подписчиков</div></div>
+      <div><div class="stat-val" data-target="1.2K">0</div><div class="stat-lab">подписчиков</div></div>
       <div class="stat-div"></div>
-      <div><div class="stat-val">49</div><div class="stat-lab">видео</div></div>
+      <div><div class="stat-val" data-target="49">0</div><div class="stat-lab">видео</div></div>
       <div class="stat-div"></div>
-      <div><div class="stat-val">594K</div><div class="stat-lab">просмотров</div></div>
+      <div><div class="stat-val" data-target="594K">0</div><div class="stat-lab">просмотров</div></div>
     </div>
     <div class="hero-btns">
       <a class="btn-primary" href="https://www.youtube.com/@unagi47" target="_blank">
@@ -366,54 +694,86 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overf
 </section>
 
 <!-- LATEST VIDEOS -->
-<section class="section" id="videos" style="background:var(--bg2);">
+<section class="section reveal" id="videos" style="background:var(--bg2);">
   <div class="eyebrow">Свежее</div>
   <div class="sec-header">
     <h2 class="sec-title">Последние видео</h2>
     <a class="see-all" href="videos.html">Смотреть все →</a>
   </div>
   <div class="vscroll-wrap">
-    <div class="vgrid">
-      <a class="vcard" href="https://youtube.com/watch?v=twyM_giCq8g" target="_blank"><div class="vthumb"><img src="https://img.youtube.com/vi/twyM_giCq8g/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/twyM_giCq8g/hqdefault.jpg'" alt="Я играл, меня пугали в Resident Evil Requiem"><span class="vdur">21:02</span></div><div class="vinfo"><div class="vtitle">Я играл, меня пугали в Resident Evil Requiem</div><div class="vmeta"><span>262</span> просмотра · 2 нед. назад</div></div></a>
-      <a class="vcard" href="https://youtube.com/watch?v=xLVY2EAa2oE" target="_blank"><div class="vthumb"><img src="https://img.youtube.com/vi/xLVY2EAa2oE/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/xLVY2EAa2oE/hqdefault.jpg'" alt="Мы неправильно играли в RPG"><span class="vdur">15:09</span></div><div class="vinfo"><div class="vtitle">Мы неправильно играли в RPG</div><div class="vmeta"><span>1 тыс.</span> просмотров · 1 мес. назад</div></div></a>
-      <a class="vcard" href="https://youtube.com/watch?v=haTx-vsEQrw" target="_blank"><div class="vthumb"><img src="https://img.youtube.com/vi/haTx-vsEQrw/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/haTx-vsEQrw/hqdefault.jpg'" alt="Убить Билла в Ghost of Yotei"><span class="vdur">18:30</span></div><div class="vinfo"><div class="vtitle">Убить Билла в Ghost of Yotei</div><div class="vmeta"><span>121</span> просмотр · 4 мес. назад</div></div></a>
-      <a class="vcard" href="https://youtube.com/watch?v=c-ElmXhr2BU" target="_blank"><div class="vthumb"><img src="https://img.youtube.com/vi/c-ElmXhr2BU/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/c-ElmXhr2BU/hqdefault.jpg'" alt="Властелин щита и Ктулху в DOOM: TDA"><span class="vdur">16:07</span></div><div class="vinfo"><div class="vtitle">Властелин щита и Ктулху в DOOM: TDA</div><div class="vmeta"><span>858</span> просмотров · 10 мес. назад</div></div></a>
-      <a class="vcard" href="https://youtube.com/watch?v=d_rlekxNksk" target="_blank"><div class="vthumb"><img src="https://img.youtube.com/vi/d_rlekxNksk/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/d_rlekxNksk/hqdefault.jpg'" alt="Секрет успеха Clair Obscur: Expedition 33"><span class="vdur">23:10</span></div><div class="vinfo"><div class="vtitle">Секрет успеха Clair Obscur: Expedition 33</div><div class="vmeta"><span>423</span> просмотра · 11 мес. назад</div></div></a>
-      <a class="vcard" href="https://youtube.com/watch?v=PlA5jEhxKjg" target="_blank"><div class="vthumb"><img src="https://img.youtube.com/vi/PlA5jEhxKjg/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/PlA5jEhxKjg/hqdefault.jpg'" alt="Шокирующая тайна Silent Hill"><span class="vdur">16:06</span></div><div class="vinfo"><div class="vtitle">Шокирующая тайна Silent Hill</div><div class="vmeta"><span>8.5 тыс.</span> просмотров · 11 мес. назад</div></div></a>
-    </div>
-  </div>
-</section>
-
-<!-- О КАНАЛЕ — кто за ним стоит -->
-<section class="about-s" id="about">
-  <div class="about-inner">
-    <div class="about-avatar-wrap">
-      <img class="about-avatar"
-        src="https://yt3.googleusercontent.com/ytc/AIdro_mJnTs8xH7hUFUFTbLmz6wlEx0-MKy2DgX3BGnJ2g=s88-c-k-c0x00ffffff-no-rj"
-        onerror="this.src='https://img.youtube.com/vi/W8FBm_gmL_8/maxresdefault.jpg'"
-        alt="Smile Cut — аватар YouTube канала">
-      <div>
-        <div class="about-channel-name">Smile Cut</div>
-        <div class="about-handle">@unagi47</div>
-      </div>
-    </div>
-    <div class="about-content">
-      <div class="eyebrow">О канале</div>
-      <h2 class="about-quote">Мы все здесь<br>ради <em>честного взгляда</em> на игры</h2>
-      <p class="about-text">Smile Cut — это канал про игры без рекламных интеграций и без желания понравиться всем. Разборы больших релизов, неожиданные находки в инди, мнения о железе и индустрии в целом. Если игра плохая — скажем. Если хорошая — тоже скажем, и объясним почему.</p>
-      <div class="about-pills">
-        <span class="about-pill"><span class="about-pill-icon">🎮</span> Обзоры игр</span>
-        <span class="about-pill"><span class="about-pill-icon">🔍</span> Разборы</span>
-        <span class="about-pill"><span class="about-pill-icon">🖥</span> Железо</span>
-        <span class="about-pill"><span class="about-pill-icon">🎯</span> Без воды</span>
-        <span class="about-pill"><span class="about-pill-icon">🚫</span> Без рекламы</span>
-      </div>
+    <div class="vgrid reveal-stagger">
+      <a class="vcard reveal" data-idx="1" data-video-id="twyM_giCq8g" href="https://youtube.com/watch?v=twyM_giCq8g" target="_blank">
+        <div class="vthumb">
+          <img src="https://img.youtube.com/vi/twyM_giCq8g/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/twyM_giCq8g/hqdefault.jpg'" alt="Я играл, меня пугали в Resident Evil Requiem">
+          <span class="vdur">21:02</span>
+          <div class="v-overlay">
+            <div class="v-overlay-title">Я играл, меня пугали в Resident Evil Requiem</div>
+            <div class="v-watch-btn"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg> Смотреть</div>
+          </div>
+        </div>
+        <div class="vinfo"><div class="vtitle">Я играл, меня пугали в Resident Evil Requiem</div><div class="vmeta"><span>262</span> просмотра · 2 нед. назад</div></div>
+      </a>
+      <a class="vcard reveal" data-idx="2" data-video-id="xLVY2EAa2oE" href="https://youtube.com/watch?v=xLVY2EAa2oE" target="_blank">
+        <div class="vthumb">
+          <img src="https://img.youtube.com/vi/xLVY2EAa2oE/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/xLVY2EAa2oE/hqdefault.jpg'" alt="Мы неправильно играли в RPG">
+          <span class="vdur">15:09</span>
+          <div class="v-overlay">
+            <div class="v-overlay-title">Мы неправильно играли в RPG</div>
+            <div class="v-watch-btn"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg> Смотреть</div>
+          </div>
+        </div>
+        <div class="vinfo"><div class="vtitle">Мы неправильно играли в RPG</div><div class="vmeta"><span>1 тыс.</span> просмотров · 1 мес. назад</div></div>
+      </a>
+      <a class="vcard reveal" data-idx="3" data-video-id="haTx-vsEQrw" href="https://youtube.com/watch?v=haTx-vsEQrw" target="_blank">
+        <div class="vthumb">
+          <img src="https://img.youtube.com/vi/haTx-vsEQrw/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/haTx-vsEQrw/hqdefault.jpg'" alt="Убить Билла в Ghost of Yotei">
+          <span class="vdur">18:30</span>
+          <div class="v-overlay">
+            <div class="v-overlay-title">Убить Билла в Ghost of Yotei</div>
+            <div class="v-watch-btn"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg> Смотреть</div>
+          </div>
+        </div>
+        <div class="vinfo"><div class="vtitle">Убить Билла в Ghost of Yotei</div><div class="vmeta"><span>121</span> просмотр · 4 мес. назад</div></div>
+      </a>
+      <a class="vcard reveal" data-idx="4" data-video-id="c-ElmXhr2BU" href="https://youtube.com/watch?v=c-ElmXhr2BU" target="_blank">
+        <div class="vthumb">
+          <img src="https://img.youtube.com/vi/c-ElmXhr2BU/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/c-ElmXhr2BU/hqdefault.jpg'" alt="Властелин щита и Ктулху в DOOM: TDA">
+          <span class="vdur">16:07</span>
+          <div class="v-overlay">
+            <div class="v-overlay-title">Властелин щита и Ктулху в DOOM: TDA</div>
+            <div class="v-watch-btn"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg> Смотреть</div>
+          </div>
+        </div>
+        <div class="vinfo"><div class="vtitle">Властелин щита и Ктулху в DOOM: TDA</div><div class="vmeta"><span>858</span> просмотров · 10 мес. назад</div></div>
+      </a>
+      <a class="vcard reveal" data-idx="5" data-video-id="d_rlekxNksk" href="https://youtube.com/watch?v=d_rlekxNksk" target="_blank">
+        <div class="vthumb">
+          <img src="https://img.youtube.com/vi/d_rlekxNksk/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/d_rlekxNksk/hqdefault.jpg'" alt="Секрет успеха Clair Obscur: Expedition 33">
+          <span class="vdur">23:10</span>
+          <div class="v-overlay">
+            <div class="v-overlay-title">Секрет успеха Clair Obscur: Expedition 33</div>
+            <div class="v-watch-btn"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg> Смотреть</div>
+          </div>
+        </div>
+        <div class="vinfo"><div class="vtitle">Секрет успеха Clair Obscur: Expedition 33</div><div class="vmeta"><span>423</span> просмотра · 11 мес. назад</div></div>
+      </a>
+      <a class="vcard reveal" data-idx="6" data-video-id="PlA5jEhxKjg" href="https://youtube.com/watch?v=PlA5jEhxKjg" target="_blank">
+        <div class="vthumb">
+          <img src="https://img.youtube.com/vi/PlA5jEhxKjg/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/PlA5jEhxKjg/hqdefault.jpg'" alt="Шокирующая тайна Silent Hill">
+          <span class="vdur">16:06</span>
+          <div class="v-overlay">
+            <div class="v-overlay-title">Шокирующая тайна Silent Hill</div>
+            <div class="v-watch-btn"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg> Смотреть</div>
+          </div>
+        </div>
+        <div class="vinfo"><div class="vtitle">Шокирующая тайна Silent Hill</div><div class="vmeta"><span>8.5 тыс.</span> просмотров · 11 мес. назад</div></div>
+      </a>
     </div>
   </div>
 </section>
 
 <!-- TG LIVE FEED -->
-<section class="tg-s" id="tg">
+<section class="tg-s reveal" id="tg">
   <div class="tg-head">
     <div>
       <div class="tg-badge"><span class="tg-live-dot"></span>Live · Telegram</div>
@@ -433,7 +793,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overf
 </section>
 
 <!-- CTA -->
-<section class="cta-s" id="join">
+<section class="cta-s reveal" id="join">
   <div class="cta-glow"></div>
   <div class="cta-txt">
     <div class="eyebrow">Сообщество</div>
@@ -460,11 +820,11 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overf
 </section>
 
 <!-- TOP -->
-<section class="section top-s" id="top">
+<section class="section top-s reveal" id="top">
   <div class="eyebrow">Хиты канала</div>
   <h2 class="sec-title">Самые популярные</h2>
-  <div class="tgrid">
-    <a class="tcard feat" href="https://youtube.com/watch?v=W8FBm_gmL_8" target="_blank" aria-label="Смотреть: Зачем нужен Steam Deck в 2024 году">
+  <div class="tgrid reveal-stagger">
+    <a class="tcard feat reveal" href="https://youtube.com/watch?v=W8FBm_gmL_8" target="_blank" aria-label="Смотреть: Зачем нужен Steam Deck в 2024 году">
       <span class="tbadge">№ 1</span>
       <div class="tthumb"><img src="https://img.youtube.com/vi/W8FBm_gmL_8/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/W8FBm_gmL_8/hqdefault.jpg'" alt="Зачем нужен Steam Deck в 2024 году — обзор Smile Cut"></div>
       <div class="tinfo">
@@ -473,7 +833,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overf
         <div class="tdesc">Честный обзор после года использования — стоит ли брать, кому подойдёт.</div>
       </div>
     </a>
-    <a class="tcard" href="https://youtube.com/watch?v=ecYRoZDKs7U" target="_blank" aria-label="Смотреть: Я пожалел о покупке Nintendo Switch">
+    <a class="tcard reveal" href="https://youtube.com/watch?v=ecYRoZDKs7U" target="_blank" aria-label="Смотреть: Я пожалел о покупке Nintendo Switch">
       <div class="tthumb"><img src="https://img.youtube.com/vi/ecYRoZDKs7U/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/ecYRoZDKs7U/hqdefault.jpg'" alt="Я пожалел о покупке Nintendo Switch в 2023 году — обзор Smile Cut"></div>
       <div class="tinfo">
         <div class="ttitle">Я пожалел о покупке Nintendo Switch</div>
@@ -481,7 +841,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overf
         <div class="tdesc">Почему Switch не стал заменой нормальной консоли и чего не хватило.</div>
       </div>
     </a>
-    <a class="tcard" href="https://youtube.com/watch?v=dC24KgDiNe8" target="_blank" aria-label="Смотреть: СССР, секс и роботы в Atomic Heart">
+    <a class="tcard reveal" href="https://youtube.com/watch?v=dC24KgDiNe8" target="_blank" aria-label="Смотреть: СССР, секс и роботы в Atomic Heart">
       <div class="tthumb"><img src="https://img.youtube.com/vi/dC24KgDiNe8/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/dC24KgDiNe8/hqdefault.jpg'" alt="СССР, секс и роботы в Atomic Heart — разбор Smile Cut"></div>
       <div class="tinfo">
         <div class="ttitle">СССР, секс и роботы в Atomic Heart</div>
@@ -496,50 +856,279 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overf
   <div class="flogo">Smile Cut</div>
   <nav class="fnav">
     <a href="#videos">Видео</a>
-    <a href="#about">О канале</a>
     <a href="#tg">Telegram</a>
     <a href="#top">Популярные</a>
     <a href="videos.html">Все видео</a>
     <a href="https://www.youtube.com/@unagi47" target="_blank">YouTube</a>
     <a href="https://vk.com/smile_cut" target="_blank">ВКонтакте</a>
   </nav>
-  <div class="fcopy">© 2026 Smile Cut · @unagi47</div>
+  <div class="fcopy">© 2026 Smile Cut · Обзоры и разборы игр · @unagi47</div>
 </footer>
 
 <script>
-// Плеер
+// === ОПРЕДЕЛЕНИЕ REDUCED-MOTION ===
+var prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// === ПЛЕЕР ===
 document.getElementById('tl').addEventListener('click',function(){
   var pw=document.getElementById('pw'),yt=document.getElementById('yt');
   yt.src='https://www.youtube.com/embed/twyM_giCq8g?autoplay=1&rel=0';
   pw.classList.add('playing');
 });
 
+// === 1. АНИМАЦИЯ СЧЁТЧИКОВ ===
+(function(){
+  // Парсит "1.2K" / "594K" / "49" → { value: 1200, suffix: 'K', decimals: 1 }
+  function parseTarget(str){
+    str = String(str).trim();
+    var m = str.match(/^([\d.]+)([KMkm]?)$/);
+    if (!m) return { raw: str, value: parseFloat(str)||0, suffix:'', decimals:0 };
+    var num = parseFloat(m[1]);
+    var suffix = m[2].toUpperCase();
+    var decimals = (m[1].split('.')[1] || '').length;
+    return { raw: str, value: num, suffix: suffix, decimals: decimals };
+  }
+
+  function formatVal(current, parsed){
+    if (parsed.suffix){
+      // Для K/M показываем с decimals только если в исходнике были
+      return current.toFixed(parsed.decimals) + parsed.suffix;
+    }
+    return Math.round(current).toString();
+  }
+
+  // easeOutCubic
+  function easeOut(t){ return 1 - Math.pow(1 - t, 3); }
+
+  function animateCounter(el){
+    var target = el.getAttribute('data-target');
+    if (!target) return;
+    var parsed = parseTarget(target);
+
+    if (prefersReducedMotion){
+      el.textContent = parsed.raw;
+      return;
+    }
+
+    var duration = 1500;
+    var start = null;
+
+    function frame(ts){
+      if (!start) start = ts;
+      var elapsed = ts - start;
+      var t = Math.min(elapsed / duration, 1);
+      var eased = easeOut(t);
+      var current = parsed.value * eased;
+      el.textContent = formatVal(current, parsed);
+      if (t < 1){
+        requestAnimationFrame(frame);
+      } else {
+        el.textContent = parsed.raw; // фиксируем точное исходное значение
+      }
+    }
+    requestAnimationFrame(frame);
+  }
+
+  // Запуск при появлении hero-stats в viewport (или сразу — hero виден)
+  var stats = document.querySelectorAll('.stat-val[data-target]');
+  if (!stats.length) return;
+
+  // Hero обычно виден сразу; используем IO для надёжности на всех экранах
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting){
+          stats.forEach(animateCounter);
+          io.disconnect();
+        }
+      });
+    }, { threshold: 0.3 });
+    var heroStats = document.querySelector('.hero-stats');
+    if (heroStats) io.observe(heroStats);
+    else stats.forEach(animateCounter);
+  } else {
+    stats.forEach(animateCounter);
+  }
+})();
+
+// === 2. ПРОГРЕСС-БАР СКРОЛЛА ===
+(function(){
+  var bar = document.getElementById('scrollProgress');
+  if (!bar) return;
+  var ticking = false;
+
+  function update(){
+    var doc = document.documentElement;
+    var scrollTop = window.scrollY || doc.scrollTop;
+    var height = doc.scrollHeight - doc.clientHeight;
+    var pct = height > 0 ? (scrollTop / height) * 100 : 0;
+    bar.style.width = Math.min(100, Math.max(0, pct)) + '%';
+    ticking = false;
+  }
+
+  window.addEventListener('scroll', function(){
+    if (!ticking){
+      requestAnimationFrame(update);
+      ticking = true;
+    }
+  }, { passive: true });
+  window.addEventListener('resize', update, { passive: true });
+  update();
+})();
+
+// === 3. NEW-БЕЙДЖИКИ (data-idx <= 3) ===
+(function(){
+  var cards = document.querySelectorAll('.vcard[data-idx]');
+  cards.forEach(function(card){
+    var idx = parseInt(card.getAttribute('data-idx'), 10);
+    if (idx > 0 && idx <= 3){
+      var thumb = card.querySelector('.vthumb');
+      if (!thumb) return;
+      var badge = document.createElement('span');
+      badge.className = 'new-badge';
+      badge.textContent = 'Новое';
+      badge.setAttribute('aria-label', 'Новое видео');
+      thumb.appendChild(badge);
+    }
+  });
+})();
+
+// === 4. SCROLL-АНИМАЦИИ (IntersectionObserver) ===
+(function(){
+  var revealEls = document.querySelectorAll('.reveal');
+  if (!revealEls.length) return;
+
+  if (prefersReducedMotion || !('IntersectionObserver' in window)){
+    revealEls.forEach(function(el){ el.classList.add('is-visible'); });
+    return;
+  }
+
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting){
+        e.target.classList.add('is-visible');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  revealEls.forEach(function(el){ io.observe(el); });
+})();
+
+// === 7. КНОПКА "ПОДЕЛИТЬСЯ" + ТОСТ ===
+(function(){
+  var toast = document.getElementById('toast');
+  var toastText = document.getElementById('toastText');
+  var toastTimer = null;
+
+  function showToast(msg){
+    if (!toast) return;
+    toastText.textContent = msg || 'Ссылка скопирована';
+    toast.classList.add('visible');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){
+      toast.classList.remove('visible');
+    }, 2000);
+  }
+
+  function copyToClipboard(text){
+    // Современный API
+    if (navigator.clipboard && window.isSecureContext){
+      return navigator.clipboard.writeText(text);
+    }
+    // Fallback
+    return new Promise(function(resolve, reject){
+      try {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.left = '-9999px';
+        ta.style.top = '0';
+        ta.setAttribute('readonly', '');
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = document.execCommand('copy');
+        document.body.removeChild(ta);
+        ok ? resolve() : reject(new Error('execCommand failed'));
+      } catch(e){ reject(e); }
+    });
+  }
+
+  // Создаём share-кнопки на каждой vcard
+  var cards = document.querySelectorAll('.vcard[data-video-id]');
+  cards.forEach(function(card){
+    var videoId = card.getAttribute('data-video-id');
+    if (!videoId) return;
+    var url = 'https://youtube.com/watch?v=' + videoId;
+
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'v-share';
+    btn.setAttribute('aria-label', 'Скопировать ссылку на видео');
+    btn.setAttribute('title', 'Скопировать ссылку');
+    btn.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>';
+
+    btn.addEventListener('click', function(ev){
+      ev.preventDefault();
+      ev.stopPropagation();
+      copyToClipboard(url).then(function(){
+        showToast('Ссылка скопирована');
+      }).catch(function(){
+        showToast('Не удалось скопировать');
+      });
+    });
+
+    var thumb = card.querySelector('.vthumb');
+    if (thumb) thumb.appendChild(btn);
+  });
+})();
+
+// === 6. ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ ===
+(function(){
+  var btn = document.getElementById('themeToggle');
+  if (!btn) return;
+  var root = document.documentElement;
+
+  function getCurrentTheme(){
+    return root.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+  }
+
+  function setTheme(theme){
+    root.setAttribute('data-theme', theme);
+    try { localStorage.setItem('sc-theme', theme); } catch(e){}
+    btn.setAttribute('aria-label', theme === 'light' ? 'Включить тёмную тему' : 'Включить светлую тему');
+  }
+
+  // Инициализация label
+  setTheme(getCurrentTheme());
+
+  btn.addEventListener('click', function(){
+    var next = getCurrentTheme() === 'light' ? 'dark' : 'light';
+    setTheme(next);
+  });
+})();
+
 // ============================================================
-// TELEGRAM LIVE FEED — с кэшем и быстрым прокси
-// Логика: показываем кэш мгновенно → грузим свежее в фоне
+// TELEGRAM LIVE FEED
 // ============================================================
 (function(){
   var CHANNEL   = 'heartbeat_freeze';
   var CACHE_KEY = 'tg_feed_v2';
-  var CACHE_TTL = 10 * 60 * 1000; // 10 минут
-
-  // Только рабочий прокси — corsproxy.io (allorigins.win упал, 503)
+  var CACHE_TTL = 10 * 60 * 1000;
   var PROXY = 'https://corsproxy.io/?';
-  var TIMEOUT = 5000; // 5 сек — не 8
+  var TIMEOUT = 5000;
 
   var feed = document.getElementById('tgFeed');
-
   var tgIcon = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg>';
 
-  // ---------- Разбор HTML → массив постов ----------
-  function parsePosts(html) {
+  function parsePosts(html){
     var parser = new DOMParser();
     var doc = parser.parseFromString(html, 'text/html');
     var messages = doc.querySelectorAll('.tgme_widget_message_wrap');
     if (!messages.length) return null;
 
     var posts = [];
-    Array.from(messages).slice(-6).reverse().forEach(function(msg) {
+    Array.from(messages).slice(-6).reverse().forEach(function(msg){
       var textEl  = msg.querySelector('.tgme_widget_message_text');
       var dateEl  = msg.querySelector('.tgme_widget_message_date time');
       var viewsEl = msg.querySelector('.tgme_widget_message_views');
@@ -551,16 +1140,14 @@ document.getElementById('tl').addEventListener('click',function(){
       if (!text && !imgEl && !videoEl) return;
 
       var date = '';
-      if (dateEl) {
+      if (dateEl){
         var dt = dateEl.getAttribute('datetime') || '';
-        if (dt) {
-          date = new Date(dt).toLocaleDateString('ru-RU', {day:'numeric', month:'long'});
-        }
+        if (dt) date = new Date(dt).toLocaleDateString('ru-RU', {day:'numeric', month:'long'});
       }
 
       var imgUrl = '';
       var src = imgEl || videoEl;
-      if (src) {
+      if (src){
         var m = (src.getAttribute('style') || '').match(/url\(['"]?([^'"]+)['"]?\)/);
         if (m) imgUrl = m[1];
       }
@@ -576,10 +1163,9 @@ document.getElementById('tl').addEventListener('click',function(){
     return posts.length ? posts : null;
   }
 
-  // ---------- Рендер постов ----------
-  function renderPosts(posts) {
+  function renderPosts(posts){
     feed.innerHTML = '';
-    posts.forEach(function(p) {
+    posts.forEach(function(p){
       var thumb = p.img
         ? '<img class="tg-post-thumb" src="' + p.img + '" alt="" loading="lazy">'
         : '<div class="tg-post-thumb-placeholder">' + tgIcon + '</div>';
@@ -601,92 +1187,64 @@ document.getElementById('tl').addEventListener('click',function(){
     });
   }
 
-  // ---------- Fallback — кнопка открыть TG ----------
-  function showFallback() {
+  function showFallback(){
     feed.innerHTML = '<div class="tg-error"><p>Не удалось загрузить ленту</p>'
       + '<a class="tg-btn" href="https://t.me/s/' + CHANNEL + '" target="_blank" style="display:inline-flex">'
       + tgIcon.replace('viewBox', 'width="15" height="15" viewBox') + ' Открыть в Telegram</a></div>';
   }
 
-  // ---------- Сохранить кэш ----------
-  function saveCache(posts) {
-    try {
-      localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), posts: posts }));
-    } catch(e) {}
+  function saveCache(posts){
+    try { localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), posts: posts })); } catch(e){}
   }
 
-  // ---------- Читать кэш ----------
-  function loadCache() {
+  function loadCache(){
     try {
       var raw = localStorage.getItem(CACHE_KEY);
       if (!raw) return null;
       var c = JSON.parse(raw);
-      if (Date.now() - c.ts > CACHE_TTL) return null; // устарел
+      if (Date.now() - c.ts > CACHE_TTL) return null;
       return c.posts;
-    } catch(e) { return null; }
+    } catch(e){ return null; }
   }
 
-  // ---------- Загрузка с сети ----------
-  async function fetchFresh() {
+  async function fetchFresh(){
     try {
       var controller = new AbortController();
       var timer = setTimeout(function(){ controller.abort(); }, TIMEOUT);
-      var res = await fetch(PROXY + encodeURIComponent('https://t.me/s/' + CHANNEL), {
-        signal: controller.signal
-      });
+      var res = await fetch(PROXY + encodeURIComponent('https://t.me/s/' + CHANNEL), { signal: controller.signal });
       clearTimeout(timer);
       if (!res.ok) return null;
       var html = await res.text();
       return parsePosts(html);
-    } catch(e) {
-      return null;
-    }
+    } catch(e){ return null; }
   }
 
-  // ---------- Главная функция ----------
-  async function init() {
-    // 1. Мгновенно показываем кэш если есть
+  async function init(){
     var cached = loadCache();
-    if (cached) {
-      renderPosts(cached);
-    }
-
-    // 2. Грузим свежее в фоне (не блокируем страницу)
+    if (cached) renderPosts(cached);
     var fresh = await fetchFresh();
-    if (fresh) {
-      renderPosts(fresh);
-      saveCache(fresh);
-    } else if (!cached) {
-      // Кэша нет и сеть не ответила
-      showFallback();
-    }
-    // Если кэш есть но сеть не ответила — оставляем кэш, не показываем ошибку
+    if (fresh){ renderPosts(fresh); saveCache(fresh); }
+    else if (!cached) showFallback();
   }
 
-  // Запуск
   init();
 
-  // Фоновое обновление каждые 10 минут (не 5 — меньше нагрузки на прокси)
   setInterval(async function(){
     var fresh = await fetchFresh();
-    if (fresh) { renderPosts(fresh); saveCache(fresh); }
+    if (fresh){ renderPosts(fresh); saveCache(fresh); }
   }, 10 * 60 * 1000);
 })();
 
-// === STICKY CTA — появляется после скролла 40% страницы ===
+// === STICKY CTA ===
 (function(){
   var btn = document.getElementById('stickyCta');
+  if (!btn) return;
   var shown = false;
   window.addEventListener('scroll', function(){
     var scrolled = window.scrollY / (document.body.scrollHeight - window.innerHeight);
-    if(!shown && scrolled > 0.4){
-      btn.classList.add('visible');
-      shown = true;
-    } else if(shown && scrolled < 0.1){
-      btn.classList.remove('visible');
-      shown = false;
-    }
-  }, {passive: true});
+    if (!shown && scrolled > 0.4){ btn.classList.add('visible'); shown = true; }
+    else if (shown && scrolled < 0.1){ btn.classList.remove('visible'); shown = false; }
+  }, { passive: true });
 })();
 </script>
 </body>
